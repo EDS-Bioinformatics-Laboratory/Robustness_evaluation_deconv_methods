@@ -1,21 +1,3 @@
-##########################################################
-#
-# Rename this file to .gitignore
-#
-# Gitignore
-# https://git-scm.com/docs/gitignore
-# Collection of .gitignore: https://github.com/github/gitignore
-# See also: https://linuxize.com/post/gitignore-ignoring-files-in-git/
-#
-# Notes: 
-# 1. use forward slash
-#
-# 2. Once you have added files to the repo then adding these to gitignore will NOT remove
-#    them from the repo. In thise case you can do:
-#         git rm -rf --cached .    (or remove single/few file(s)
-#         git add .
-#
-##########################################################
 
 
 ## R specific
