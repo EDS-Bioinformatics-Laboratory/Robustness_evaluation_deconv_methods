@@ -1,34 +1,25 @@
-<<<<<<< HEAD
 # <font color="darkgreen"> Systematic evaluation of robustness to cell type mismatch of deconvolution methods for spatial transcriptomics data </font>
 
 &emsp;&emsp;&emsp;&emsp; Spatial transcriptomics approaches based on sequencing (barcode-based, e.g., 10x Visium) preserve spatial information but with limited cellular resolution. On the other hand, single-cell RNA-sequencing (scRNA-seq) techniques provide single-cell resolution but lose spatial resolution because of the tissue dissociation step during the scRNA-seq experimental procedure. With these complementary strengths in mind, computational methods have been developed to combine scRNA-seq and spatial transcriptomics data. These approaches use deconvolution to identify cell types and their respective proportions at each location in spatial transcriptomics data with the aid of a scRNA-seq reference dataset. Some suggest that deconvolution approaches are sensitive to the absence of cell type(s) in the single-cell reference dataset, a problem referred to as *cell type mismatch*.
-=======
-### Systematic evaluation of robustness to cell type mismatch of cell type deconvolution methods for spatial transcriptomics data 
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 
-Spatial transcriptomics approaches based on sequencing (barcode-based, e.g., 10x Visium) preserve spatial information but with limited cellular resolution. On the other hand, single-cell RNA-sequencing (scRNA-seq) techniques provide single-cell resolution but lose spatial resolution because of the tissue dissociation step during the scRNA-seq protocol. With these complementary strengths in mind, computational methods have been developed to combine scRNA-seq and spatial transcriptomics data. These approaches use deconvolution to identify cell types and their respective proportions at each location in spatial transcriptomics data with the aid of a scRNA-seq reference dataset. Some suggest that deconvolution approaches are sensitive to the absence of cell type(s) in the single-cell reference dataset, a problem referred to as *cell type mismatch*.
 Here, we systematically evaluated the robustness of deconvolution methods to cell type mismatch tailored for spatial transcriptomics data.
+<br>
+<br>
 
-#### Content of the Processing directory
+## <font color = "green">Content of the Processing directory</font>
 
-**0_SoftwareEnvironment**:
-This directory enlists the software environment specifications used during the project.
+* **0_SoftwareEnvironment**:
+This directory enlists the software environment specifications used for various programming languages and/or platforms during the project.
 
-**Data**: Comprised of pre-processed data either downloaded from a public data-sharing platform or procured from the group of Lisa van Baarsen.
+* **1\_Generate\_sc\_ref\_data**: The directory comprises scripts, results and settings to generate the integrated scRNA-seq dataset from 2 distinct and complementary scRNA-seq datasets. The final result **`sc.ref.data.rds`** is used as a basis to generate various reference dataset versions based on cell type removal scenarios and to generate simulated spatial transcriptomics datasets.
 
-**1\_Generate\_sc\_ref\_data**: The directory comprises scripts, results and settings to generate the integrated scRNA-seq dataset from 2 distinct and complementary scRNA-seq datasets. The final result `sc.ref.data.rds` is used in the further downstream analysis as a reference dataset for generating simulated spatial transcriptomics datasets and as an input to deconvolution methods.
+* **2\_Simulating\_ST\_data**: Comprised of scripts, results and settings to generate the sequencing-based simulated spatial transcriptomics datasets varying in number of cells & cell types present per spatial location (spot). We created three simulated ST datasets using the algorithm developed for the analysis.
 
-<<<<<<< HEAD
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; a. **<font color="brown">ST1</font>**: 4-8 cell types and 10-15 cells per spot; <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; b. **<font color="brown">ST2</font>**: 1-5 cell types and 10-15 cells per spot; <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; c. **<font color="brown">ST3</font>**: 1-5 cell types and 3-7 cells per spot.
-=======
-**2\_Simulating\_ST\_data**: Comprised of scripts, results and settings to generate the sequencing-based simulated spatial transcriptomics datasets varying in number of cells & cell types present per spatial location. We created 4 simulated ST datasets using the algorithm developed for the analysis.
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 
-**3\_ST\_methods**: Comprised of standalone R/python scripts, one for each deconvolution method and shell scripts to execute the R or python scripts in parallel, provided the required computational power is available. The resulting deconvolution results for each removal scenario are available in respected directory (for instance rm1 directory referes to removal of 1 cell type from scRNA-seq reference data).
 
-<<<<<<< HEAD
 * **3\_ST\_methods**: Comprised of standalone R/Python scripts, one for each deconvolution method and shell/batch scripts to execute the R or Python scripts in parallel for multiple instances in a removal scenario, <font color="blue">provided the required computational power is available</font>. Six of the eight methods are R-based, while two are Python-based. The Python-based methods <font color="blue"> expect GPU support </font>.<br>
 &emsp;&emsp;&emsp;&emsp;The resulting deconvolution results for each removal scenario are available in the respected directory (for instance, the _**rm1**_ directory refers to the removal scenario for removing one cell type from scRNA-seq reference data). See below the overview of removal scenarios and total reference datasets in each scenario. <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 1. **<font color="brown">rm0</font>** - removal of _**no**_ cell types from reference data &emsp;| one reference dataset <br>
@@ -38,41 +29,52 @@ This directory enlists the software environment specifications used during the p
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 5. **<font color="brown">rm5</font>** - removal of _**five**_ cell types from reference data &emsp;| 1 reference dataset <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 6. **<font color="brown">rm10</font>** - removal of _**ten**_ cell types from reference data &emsp;| 5 reference datasets <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 7. **<font color="brown">rm11</font>** - removal of _**eleven**_ cell types from reference data &emsp;| 5 reference datasets
-=======
-**4\_Analysis\_results**: Comprised of scripts to calculate similarity metrics like JSD and RMSE to understand the performance of deconvolution methods for various cell type removal scenarios compared to baseline with no cell type missing. Cell type reassignment metrics calculates assignment of missing celltype proportions from reference dataset.
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 
-**5\_Post\_analysis\_work**: The directory comprises scripts to generate the figures in the manuscript.
 
-**6\_Quick\_Results**: The directory comprises scripts to generate results for the selective methods and analysis for quicker reproducibility.
+* **4\_Analysis\_results**: Comprised of scripts to calculate similarity metrics like JSD and RMSE to understand the performance of deconvolution methods for various cell type removal scenarios compared to baseline with no cell type missing. Cell type reassignment metrics calculate the assignment of missing cell type proportions from the reference dataset.
+
+* **5\_Post\_analysis\_work**: The directory comprises scripts to generate the final resulting plots in the project; few plots are included in the manuscript's main text, while others were included in the supplementary information.
+
+* **Data**: Comprised of pre-processed data downloaded from a public data-sharing platform. One of the datasets is procured from the group of Lisa van Baarsen and is available on GEO as well with GEO accession ID - ####. <font color="brown">(not available in github repository)</font>
+
+* **renv**: The project uses the renv functionality and the directory comprises the essential files and directories for the renv setup.
+
+* **Renv_setup.R**: This script sets up the R environment for the project work. Details about executing are available in the file as a header and in the comments. Also included under the 'How to reproduce the results section further dowm in this document.<br>
+**Please read the instructions in the file carefully before proceeding if you are using RStudio.**
+
+* **renv.lock**: R environment lock (metadata) file comprising package details. This file will be used by the <font color="brown">*Renv_setup.R*</font> script to download and install the correct package and its version to recreate the computing environment.
+
+* **.Rprofile**: Essential R profile script to set up the correct R profile while using the renv infrastructure.
+
+* **environment.yml**: A metadata file comprising of python and/or packages installed in the virtual conda environment.
 
 <br>
 
-#### How can you reproduce the results in the manuscript?
-
-1. Software environment for R and Python used during the original analysis can be found under the`/0_SoftwareEnvironment` directory.
+## <font color = "green"> How can you reproduce the results in the manuscript? </font>
 
 
-2. For reproducibility, the project utilises renv functionality. To setup renv functionalities for your analysis, please follow the steps below;
+<font color="red" size = 3> **Note**: The analysis has been carried out using R version <u>**4.1.2**</u>; please make sure you use the same version while trying to reproduce the results</font>
+
+* The software environment for R and Python used during the original analysis can be found under the `/0_SoftwareEnvironment` directory.
+
+
+* For reproducibility, the project utilises renv and conda functionality. <br>
+
+	<font color="darkblue" size=4>§ Steps to set up renv functionalities for your analysis </font> <br>
 	
-	i. Read [getting started with renv](https://rstudio.github.io/renv/articles/renv.html) carefully to understand the functionalities provided by the renv R package.
+	**I**. 	<font color="brown">[optional]</font> Read [<font color="blue">getting started with renv</font>](https://rstudio.github.io/renv/articles/renv.html) carefully to understand the functionalities provided by the renv R package.
 	
-	ii. Creating an R project in RStudio: `RStudio > File > New Project > Existing Directory > Select the /Processing` directory in the sFSS. You can refer to [RStudio projects](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects) for more details on how the projects in RStudio work.
+	**II**. <font color="brown">[Only if using RStudio to reproduce the results]</font> Create an R project in RStudio: `RStudio > File > New Project > Existing Directory > Select the /Processing` directory in the sFSS or the root directory if downloaded from github repository. For more details on how RStudio projects work, refer to [<font color="blue">RStudio projects</font>](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects).
 	
-<<<<<<< HEAD
 	**III**. Executing `Renv_Setup.R` under the `/Processing` directory to initialise the renv infrastructure for the R project:
 	- The `Renv_Setup.R` script expects a **GITHUB_PAT token (classic)** to be set in the R environment. Please make sure you edit the script to add your own token. More details on the github token can be found [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 	- If using RStudio: execute the script line-by-line, read the comments within the scripts.
 	- If using bash/shell terminal: <br>
 		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`Rscript Renv_setup.R`</font> 
-=======
-	iii. Open `Renv_Setup.R` under the `/Processing` directory in the newly created R project in RStudio and execute the script line-by-line.
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 		
-		The required files (renv.lock, .Rprofile, renv/activate.R) should already be in your R project directory;
-		If not, ensure it resides in the same directory as the Renv_setup.R file.
+	&emsp;&emsp;&emsp;&emsp;&emsp;
+*The required files <font color="brown">(renv.lock, .Rprofile, renv/activate.R, renv/setting.json)</font> should already be in your R project directory; If not, ensure it resides in the same directory as the Renv_setup.R file.*
 	
-<<<<<<< HEAD
 	> **<font color="red">Note:</font>** A collaborator can still experience minor discrepancies in the results while using the renv functionality due to the platform(OS) dependencies.
 	
 	<br>
@@ -108,19 +110,9 @@ This directory enlists the software environment specifications used during the p
 <br>
 
 #### <font color="darkblue">Module-2: Navigate to "2\_Simulating\_ST\_data/Code/" directory </font>
-=======
-	> **Note**: a collaborator can still experience minor discrepancies in the results while using the renv functionality due to the package dependencies, which are unavailable or non-functional and had to be updated to a newer version.
-	
-	> The differences in the package versions can be cross checked by the session info file provided under the `/Settings` directory in the every sub-analysis directory (e.g., `/1_Generate_sc_ref_data`) with the output of `sessionInfo()` command.
 
+* Generating simulated spatial transcriptomics datasets using single-cell reference data, the three datasets vary by the number of cells and cell types present per spatial location using the commands as below;
 
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
-
-3. To load the required R packages in the session and set up the path to results, data and R/Python script directories.
-	
-	*R script:* `1_Generate_sc_ref_data/Code/Init_env.R`
-
-<<<<<<< HEAD
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Generate_ST_data.R`</font>
 	
@@ -130,45 +122,19 @@ This directory enlists the software environment specifications used during the p
 	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c. min number of cells per spot <br>
 	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;d. max number of cells per spot <br>
 	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;e. index of simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
-=======
-4. To generate a single-cell reference dataset from multiple single-cell datasets. The paths to the processed data folder are already set through the 'Init_env.R' script.
-
-	*R script:* `1_Generate_sc_ref_data/Code/SC_ref_data_donorwise.R`
-	> *Note: This script takes a long time when executed on a local machine with (16GB RAM). This step can be skipped using the final result at `1_Generate_sc_ref_data/Results/sc.ref.data.rds`.*
-If you do not have the `sc.ref.data.rds` file, please contact the developer to get it.
-
-5. To generate single-cell reference datasets for different scenarios based on removing cell types.
 	
-	*R script:* `1_Generate_sc_ref_data/Code/SC_ref_data_scenarios.R`
-	> *Note: This script requires the single-cell reference dataset generated in the previous step.*
-
-6. To generate simulated spatial transcriptomics datasets using single-cell reference data. The four datasets vary in terms of the number of cells and cell types present per spatial location.
-
-	*R script:* `2_Simulating_ST_data/Code/Generate_ST_data.R`
-	> **Note: R script expects 5 command line arguments in the order mentioned below;**  
-	> 	*a. min number of cell types per spot <br>
-	> 	b. max number of cell types per spot <br>
-	>	c. min number of cells per spot <br>
-	>	d. max number of cells per spot <br>
-	>	e. index of simulated ST dataset (either 1/2/3) <br>*
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
-	
-		E.g., Commands to generate 1st, 2nd & 3rd simulated ST datasets,
+		e.g., command line input to generate 1st, 2nd & 3rd simulated ST datasets  would be then as below,
 		Rscript Generate_ST_data.R 4 8 10 15 1
 		Rscript Generate_ST_data.R 1 5 10 15 2
 		Rscript Generate_ST_data.R 1 5 3 7 3
 
-<<<<<<< HEAD
 <br>
 
 #### <font color="darkblue">Module-3: Navigate to "3\_ST\_methods/Code/" directory </font>
-=======
-7. To predict cell type proportions using the cell type deconvolution methods. The shell scripts execute all deconvolution methods simultaneously in parallel or serial combination. The standalone scripts for each deconvolution method also exist and expects the same arguments as that of shell script.
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 
-	*Shell scripts to execute R-based deconvolution methods:* `3_ST_methods/Code/Execute_R_based_methods.sh`
+* The shell/batch scripts execute all deconvolution methods to predict cell type proportions simultaneously for all removal scenarios and multiple reference datasets for each scenario. <br>
+You only need to run shell/batch scripts for the results; details about the standalone scripts are for informational purpose only and can be execute incase of a failure of a deconvolution method for a specific ST and SC dataset pair.
 
-<<<<<<< HEAD
 	Shell/batch scripts to execute R/Python-based deconvolution methods: <br>
 	<font color="blue">`Execute_R_based_methods.sh`</font>, <br>
 	<font color="blue">`Execute_python_based_methods.sh`</font>, <br>
@@ -190,7 +156,8 @@ If you do not have the `sc.ref.data.rds` file, please contact the developer to g
 		(6) ./Execute_R_based_methods.sh 1 5 rm10
 		(7) ./Execute_R_based_methods.sh 1 5 rm11
 		
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="brown", size=2> replace `Execute_R_based_methods.sh` by `Execute_python_based_methods.sh` for executing python-based methods. </font>
+
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <font color="brown", size=2> replace `Execute_R_based_methods.sh` by `Execute_python_based_methods.sh` for executing python-based methods. </font>
 	
 	*The standalone scripts for each deconvolution method expect the command line arguments as below; notice the different versions of argument <font color="red">b </font>*.
 
@@ -200,38 +167,20 @@ If you do not have the `sc.ref.data.rds` file, please contact the developer to g
 	> c. path to simulated ST datasets directory <br>
 	> d. path to single-cell reference datasets directory <br>
 	> e. path to save deconvolution results directory* <br>
-=======
-	> **Note: The shell script executes R-based methods in parallel and in a loop <br>**
-	> *a. total number of ST datasets [options: 1, 2, 3] <br>
-	> b. total number of single-cell reference datasets [options varies per removal scenario; <br> rm0= 1, rm1= 13, rm2= 5, rm3= 5, rm5= 1, rm10= 5, rm11= 5] <br>
-	> c. path to simulated ST datasets directory <br>
-	> d. path to single-cell reference datasets directory <br>
-	> e. path to save deconvolution results directory <br>*
-		
-		E.g. commands for removal of no cell type mismatch (baseline) & one or more cell type mismatch scenarios would be then as follows,
-		
-		(1) ./Execute_R_based_methods.sh 1 1 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/" "../Results/rm0/"
-		(2) ./Execute_R_based_methods.sh 1 13 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm1/" "../Results/rm1/"
-		(3) ./Execute_R_based_methods.sh 1 5 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm2/" "../Results/rm2/"
-		(4) ./Execute_R_based_methods.sh 1 5 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm3/" "../Results/rm3/"
-		(5) ./Execute_R_based_methods.sh 1 1 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm5/" "../Results/rm5/"
-		(6) ./Execute_R_based_methods.sh 1 5 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm10/" "../Results/rm10/"
-		(7) ./Execute_R_based_methods.sh 1 5 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm11/" "../Results/rm11/"
-		
-
-	*Shell scripts to execute python-based deconvolution methods:* `3_ST_methods/Code/Execute_python_based_methods.sh`
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 	
-	> **Note: The shell script executes Python-based methods in parallel <br>**
-	> *a. index of the ST dataset [options: 1, 2, 3] <br>
-	> b. total number of single-cell reference datasets [options varies per removal scenario; <br> rm0= 1, rm1= 13, rm2= 5, rm3= 5, rm5= 1, rm10= 5, rm11= 5] <br>
-	> c. path to simulated ST datasets directory <br>
-	> d. path to single-cell reference datasets directory <br>
-	> e. path to save deconvolution results directory <br>*
+		e.g., command line input for one cell type removal scenario for all available reference datasets would be then as follows,
+		- Rscript method_name.R 1 1 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm1/" "../Results/rm1/"
+		- Rscript method_name.R 1 2 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm1/" "../Results/rm1/"
+			.
+			.
+			.
+		- Rscript method_name.R 1 13 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm1/" "../Results/rm1/"
+		
+		
+		- python3 method_name.py 1 13 "../../2_Simulating_ST_data/Results/Spatial_Data/" "../../1_Generate_sc_ref_data/Results/rm1/" "../Results/rm1/"
 
-	*The standalone scripts for each deconvolution method also expect same command line arguments as above*<br>
+	<font color="red"> **Note**: While executing Cell2location **without GPU support**, `use_gpu` argument should be set to **FALSE** in Cell2Location.py script.</font>
 
-<<<<<<< HEAD
 <br>
 
 #### <font color="darkblue">Module-4: Navigate to "4\_Analysis\_results/Code/" directory </font>
@@ -305,35 +254,16 @@ If you do not have the `sc.ref.data.rds` file, please contact the developer to g
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Funky_plots.R`</font> <br>
 	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> <font color="blue">`Funky_plots.R`</font> expects command line arguments as below;<br>
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
-=======
-	
-
-8. Estimate performance metrics for all the scenarios (baseline and removal) in `4_Analysis_results/Code`
-    - *For JSD calculations:* `Get_JSD_results.R`
-    - *For RMSE calculations:* `Get_RMSE_results.R`
-    - *For cell tyepe reassignment calculations:* `Get_celltype_assignment_results.R`
-    
-	> *Note: Estimating performance metrics needs deconvolution results generated in the previous step.*
-
-9. Generate figures and results for calculated JSD, RMSE and cell type reassignment estimates for all the cell type removal scenarios.
-
-	*R scripts* under `5_Post_analysis_work/Code`
-	
-	`Fig_jsd_rmse_plots.R`, `Funky_plots.R`, `Plot_CT_assignment_rm1.R`, `Plot_CT_assignment_rm1.R`, `Plot_CT_assignment_rm1.R`, `Plot_CT_assignment_rm1.R`
-
->>>>>>> parent of c830ac4 (Updated scripts for better reproducibility)
 
 <br>
 <br>
-### How to execute the 6\_Quick_Results module?
-TBA
+<br>
 
+## <font color = "red"> Known issues </font>
 
-### Issues:
+#### 1. Installation of 'fields' R package on macOS
 
-**1. Installation of 'fields' R package on macOS**
-
-The analysis is carried out with fields package version 13.3 developed under R version 4.1 and RStudio built for x86\_64 architecture.
+The analysis is carried out with fields package version 13.3 developed under R version 4.1.2 and RStudio built for x86\_64 architecture.
 
 If you use MacOS with arm\_64 architecture and install RStudio built for x86\_64 architecture, it will use the underlying 'Rosetta2' to run RStudio with x86\_64 architecture, and you will able to install the required 13.3 version of the fields package from CRAN archives.
 But if you install RStudio built for arm\_64, it will run with the native silicon chip, and then you will get the error below,
@@ -448,23 +378,23 @@ Traceback (most recent calls last):
  
 </details>
 
-to resolve this error, 
+to resolve this error, you can follow either option from below, 
 
-- you can install the latest version 15.2 ([R-binaries](https://cran.r-project.org/web/packages/fields/index.html) available for arm\_64); this will affect the CARD package since it needs to be updated to the latest version as well.
+- You can install the latest version 15.2 of fields R package ([R-binaries](https://cran.r-project.org/web/packages/fields/index.html) available for arm\_64); this will affect the CARD package since it needs to be updated to the latest version as well.
 
-- install R and RStudio built for x86\_64 architecture and run the analysis using it. If you still get the same error, the compiler uses the default arm\_64 architecture to install R packages that need compilation.
+- Install R and RStudio built for x86\_64 architecture and run the analysis using it. If you still get the same error, the compiler uses the default arm\_64 architecture to install R packages that need compilation.
 
 <br>
 
-**2. Compilation failed error on Windows OS**
+####2. Compilation failed error on Windows OS
 
 R and RStudio on Windows OS require rtools (a toolchain for building R and R packages). The correct version of rtools can be downloaded from [here](https://cran.r-project.org/bin/windows/Rtools/).
 
-	Ensure you do not have white spaces in your paths while installing the rtools.
+> <font color="red">Note:</font> Ensure you do not have white spaces in your paths while installing the rtools.
 	
 <br>
 
-**3. Miniconda installation prompt**
+#### 3. Miniconda installation prompt
 
 		No non-system installation of Python could be found.
 		Would you like to download and install Miniconda?
@@ -473,11 +403,38 @@ R and RStudio on Windows OS require rtools (a toolchain for building R and R pac
 		 
 		Would you like to install Miniconda? [Y/n]:
 
-If you see above prompt in your execution of analysis, press `n` and stop the execution.
+If you see the above prompt in your execution attempt, press <font color="red">**n**</font> and stop the execution.
 
-Before moving forward please check your python installation before moving forward with `Sys.which("python")` or `Sys.which("python3")` in RStudio console.
+Please check your Python installation before proceeding. You can check this using `Sys.which("python")` or `Sys.which("python3")` in the RStudio console.
 
-- If you see `" "`, please install the python version 3.9.7 and try again.
-- If you see `"/path_to_python_installation"`, please contact the developer or create an issue on the GitHub repository with the error message, R session info, and python installation details (path, version, etc).
+- If you see `" "`, please install the python version 3.9.7 (*or higher*) and try again.
+- If you see `"/path_to_python_installation"`, please contact the developer or create an issue on the GitHub repository with the error message, R session info, and Python installation details (path, version, etc).
 
-		
+<br>
+
+#### 4. RCTD parallel execution
+
+If you come across the below error while executing the RCTD deconvolution method.
+
+```
+Error in checkForRemoteErrors(lapply(cl, recvResult)) :
+  4 nodes produced errors; first error: object '.doSnowGlobals' not found
+Calls: run.RCTD ... %dopar% -> <Anonymous> -> clusterCall -> checkForRemoteErrors
+Execution halted
+EEError in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+rror in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+EError in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+```
+
+This is a known issue when RCTD runs multiple jobs in parallel from within the deconvolution function. This has been reported to the developers earlier and can be found in the issues on the GitHub repository ([link](https://github.com/dmcable/spacexr/issues/141)).
+
+Please follow the solution available in the reported issue; if the problem persists, please raise an issue on GitHub.
