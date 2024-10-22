@@ -13,7 +13,7 @@ This directory enlists the software environment specifications used for various 
 
 * **1\_Generate\_sc\_ref\_data**: The directory comprises scripts, results and settings to generate the integrated scRNA-seq dataset from 2 distinct and complementary scRNA-seq datasets. The final result **`sc.ref.data.rds`** is used as a basis to generate various reference dataset versions based on cell type removal scenarios and to generate simulated spatial transcriptomics datasets.
 
-* **2\_Simulating\_ST\_data**: Comprised of scripts, results and settings to generate the sequencing-based simulated spatial transcriptomics datasets varying in number of cells & cell types present per spatial location (spot). We created three simulated ST datasets using the algorithm developed for the analysis.
+* **2\_Simulating\_ST\_data**: Comprised of scripts, results and settings to generate the sequencing-based simulated spatial transcriptomics datasets varying in number of cells & cell types present per spatial location (spot). We created three simulated ST datasets using the algorithm developed for the analysis. <br>
 &emsp;&emsp;&emsp; a. **<font color="brown">ST1</font>**: 4-8 cell types and 10-15 cells per spot; <br>
 &emsp;&emsp;&emsp; b. **<font color="brown">ST2</font>**: 1-5 cell types and 10-15 cells per spot; <br>
 &emsp;&emsp;&emsp; c. **<font color="brown">ST3</font>**: 1-5 cell types and 3-7 cells per spot.
@@ -122,7 +122,7 @@ This directory enlists the software environment specifications used for various 
 	>	&emsp;&emsp;&emsp;&emsp;d. max number of cells per spot <br>
 	>	&emsp;&emsp;&emsp;&emsp;e. index of simulated ST dataset [*options: 1, 2, 3* ] <br>
 	
-		e.g., command line input to generate 1st, 2nd & 3rd simulated ST datasets  would be then as below,
+		e.g., command line input to generate 1st, 2nd & 3rd simulated ST datasets would be then as below,
 		Rscript Generate_ST_data.R 4 8 10 15 1
 		Rscript Generate_ST_data.R 1 5 10 15 2
 		Rscript Generate_ST_data.R 1 5 3 7 3
