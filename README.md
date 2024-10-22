@@ -14,21 +14,20 @@ This directory enlists the software environment specifications used for various 
 * **1\_Generate\_sc\_ref\_data**: The directory comprises scripts, results and settings to generate the integrated scRNA-seq dataset from 2 distinct and complementary scRNA-seq datasets. The final result **`sc.ref.data.rds`** is used as a basis to generate various reference dataset versions based on cell type removal scenarios and to generate simulated spatial transcriptomics datasets.
 
 * **2\_Simulating\_ST\_data**: Comprised of scripts, results and settings to generate the sequencing-based simulated spatial transcriptomics datasets varying in number of cells & cell types present per spatial location (spot). We created three simulated ST datasets using the algorithm developed for the analysis.
+&emsp;&emsp;&emsp; a. **<font color="brown">ST1</font>**: 4-8 cell types and 10-15 cells per spot; <br>
+&emsp;&emsp;&emsp; b. **<font color="brown">ST2</font>**: 1-5 cell types and 10-15 cells per spot; <br>
+&emsp;&emsp;&emsp; c. **<font color="brown">ST3</font>**: 1-5 cell types and 3-7 cells per spot.
 
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; a. **<font color="brown">ST1</font>**: 4-8 cell types and 10-15 cells per spot; <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; b. **<font color="brown">ST2</font>**: 1-5 cell types and 10-15 cells per spot; <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; c. **<font color="brown">ST3</font>**: 1-5 cell types and 3-7 cells per spot.
 
-
-* **3\_ST\_methods**: Comprised of standalone R/Python scripts, one for each deconvolution method and shell/batch scripts to execute the R or Python scripts in parallel for multiple instances in a removal scenario, <font color="blue">provided the required computational power is available</font>. Six of the eight methods are R-based, while two are Python-based. The Python-based methods <font color="blue"> expect GPU support </font>.<br>
-&emsp;&emsp;&emsp;&emsp;The resulting deconvolution results for each removal scenario are available in the respected directory (for instance, the _**rm1**_ directory refers to the removal scenario for removing one cell type from scRNA-seq reference data). See below the overview of removal scenarios and total reference datasets in each scenario. <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 1. **<font color="brown">rm0</font>** - removal of _**no**_ cell types from reference data &emsp;| one reference dataset <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 2. **<font color="brown">rm1</font>** - removal of _**one**_ cell type from reference data &emsp;| 13 reference datasets <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 3. **<font color="brown">rm2</font>** - removal of _**two**_ cell types from reference data &emsp;| 5 reference datasets <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 4. **<font color="brown">rm3</font>** - removal of _**three**_ cell types from reference data &emsp;| 5 reference datasets <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 5. **<font color="brown">rm5</font>** - removal of _**five**_ cell types from reference data &emsp;| 1 reference dataset <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 6. **<font color="brown">rm10</font>** - removal of _**ten**_ cell types from reference data &emsp;| 5 reference datasets <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 7. **<font color="brown">rm11</font>** - removal of _**eleven**_ cell types from reference data &emsp;| 5 reference datasets
+* **3\_ST\_methods**: Comprised of standalone R/Python scripts, one for each deconvolution method and shell/batch scripts to execute the R or Python scripts in parallel for multiple instances in a removal scenario, <font color="blue">provided the required computational power is available</font>. Six of the eight methods are *R-based*, while two are *Python-based*. The Python-based methods <font color="blue"> expect GPU support </font>.<br>
+&emsp;&emsp;&emsp; The resulting deconvolution results for each removal scenario are available in the respected directory (for instance, the _**rm1**_ directory refers to the removal scenario for removing one cell type from scRNA-seq reference data). See below the overview of removal scenarios and total reference datasets in each scenario. <br>
+&emsp;&emsp;&emsp; 1. **<font color="brown">rm0</font>** - removal of _**no**_ cell types from reference data | one reference dataset <br>
+&emsp;&emsp;&emsp; 2. **<font color="brown">rm1</font>** - removal of _**one**_ cell type from reference data | 13 reference datasets <br>
+&emsp;&emsp;&emsp; 3. **<font color="brown">rm2</font>** - removal of _**two**_ cell types from reference data | 5 reference datasets <br>
+&emsp;&emsp;&emsp; 4. **<font color="brown">rm3</font>** - removal of _**three**_ cell types from reference data | 5 reference datasets <br>
+&emsp;&emsp;&emsp; 5. **<font color="brown">rm5</font>** - removal of _**five**_ cell types from reference data | 1 reference dataset <br>
+&emsp;&emsp;&emsp; 6. **<font color="brown">rm10</font>** - removal of _**ten**_ cell types from reference data | 5 reference datasets <br>
+&emsp;&emsp;&emsp; 7. **<font color="brown">rm11</font>** - removal of _**eleven**_ cell types from reference data | 5 reference datasets
 
 
 * **4\_Analysis\_results**: Comprised of scripts to calculate similarity metrics like JSD and RMSE to understand the performance of deconvolution methods for various cell type removal scenarios compared to baseline with no cell type missing. Cell type reassignment metrics calculate the assignment of missing cell type proportions from the reference dataset.
@@ -72,7 +71,7 @@ This directory enlists the software environment specifications used for various 
 	- If using bash/shell terminal: <br>
 		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`Rscript Renv_setup.R`</font> 
 		
-	&emsp;&emsp;&emsp;&emsp;&emsp;
+	&emsp;&emsp;&emsp;&emsp;
 *The required files <font color="brown">(renv.lock, .Rprofile, renv/activate.R, renv/setting.json)</font> should already be in your R project directory; If not, ensure it resides in the same directory as the Renv_setup.R file.*
 	
 	> **<font color="red">Note:</font>** A collaborator can still experience minor discrepancies in the results while using the renv functionality due to the platform(OS) dependencies.
@@ -87,7 +86,7 @@ This directory enlists the software environment specifications used for various 
 	
 	**III**. To create a conda virtual environment similar to the analysis use the <font color="brown">*environment.yml*</font> file available in the root directory or under `0_SoftwareEnvironment/Python` directory. The command for creating conda virtual environment from command line terminal/prompt is as below;
 	
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`conda env create -f environment.yml`</font> 
+	&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`conda env create -f environment.yml`</font> 
 
 	> **<font color="red">Note:</font>** Depending on your platform(OS) installation of few python packages/libraries might 	fail, please check the logs/status of the environment creation carefully.
 	
@@ -98,14 +97,14 @@ This directory enlists the software environment specifications used for various 
 
 * Generating a single-cell reference dataset from multiple single-cell datasets, UMAP representations included in the supplementary information of the manuscript using the commands as below; 
 	
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript SC_ref_data.R` </font> 
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript SC_ref_data.R` </font> 
 	
 * Generating single-cell reference datasets for all removal scenarios based on cell type removal using the commands as below;
 	
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript SC_ref_data_scenarios.R`</font>
-	> <font color="red">Note:</font> This script requires the single-cell reference dataset generated in the previous step.
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript SC_ref_data_scenarios.R`</font>
+	> <font color="red">Note:</font>`SC_ref_data_scenarios.R` script requires the single-cell reference dataset generated in the previous step.
 	
 <br>
 
@@ -113,15 +112,15 @@ This directory enlists the software environment specifications used for various 
 
 * Generating simulated spatial transcriptomics datasets using single-cell reference data, the three datasets vary by the number of cells and cell types present per spatial location using the commands as below;
 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Generate_ST_data.R`</font>
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br>
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Generate_ST_data.R` *arg1 arg2 arg3 arg4 arg5*</font>
 	
-	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> R script expects five command line arguments in the order mentioned below;<br>
-	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. min number of cell types per spot <br>
-	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;b. max number of cell types per spot <br>
-	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c. min number of cells per spot <br>
-	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;d. max number of cells per spot <br>
-	>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;e. index of simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
+	> &emsp;&emsp;&emsp;<font color="red">Note:</font> `Generate_ST_data.R` script expects five command line arguments in the order mentioned below;<br>
+	>	&emsp;&emsp;&emsp;&emsp;a. min number of cell types per spot <br>
+	>	&emsp;&emsp;&emsp;&emsp;b. max number of cell types per spot <br>
+	>	&emsp;&emsp;&emsp;&emsp;c. min number of cells per spot <br>
+	>	&emsp;&emsp;&emsp;&emsp;d. max number of cells per spot <br>
+	>	&emsp;&emsp;&emsp;&emsp;e. index of simulated ST dataset [*options: 1, 2, 3* ] <br>
 	
 		e.g., command line input to generate 1st, 2nd & 3rd simulated ST datasets  would be then as below,
 		Rscript Generate_ST_data.R 4 8 10 15 1
@@ -136,16 +135,16 @@ This directory enlists the software environment specifications used for various 
 You only need to run shell/batch scripts for the results; details about the standalone scripts are for informational purpose only and can be execute incase of a failure of a deconvolution method for a specific ST and SC dataset pair.
 
 	Shell/batch scripts to execute R/Python-based deconvolution methods: <br>
-	<font color="blue">`Execute_R_based_methods.sh`</font>, <br>
-	<font color="blue">`Execute_python_based_methods.sh`</font>, <br>
-		<font color="blue">`Execute_R_based_methods.bat`</font>, <br>
-	<font color="blue">`Execute_python_based_methods.bat`</font>
+	<font color="blue">`Execute_R_based_methods.sh` *arg1 arg2 arg3*</font>, <br>
+	<font color="blue">`Execute_python_based_methods.sh` *arg1 arg2 arg3*</font>, <br>
+		<font color="blue">`Execute_R_based_methods.bat` *arg1 arg2 arg3*</font>, <br>
+	<font color="blue">`Execute_python_based_methods.bat` *arg1 arg2 arg3*</font>
 
 	> <font color="red">Note:</font> The script to execute R-based/Python-based methods executes each method in parallel for a provided number of reference datasets and removal scenarios; the required command line arguments are as below:<br>
-	> &emsp;&emsp;&emsp;&emsp;a. index of the ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
-	> &emsp;&emsp;&emsp;&emsp;b. total number of single-cell reference datasets <font color="brown", size=2>[options per removal scenario; <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;rm0= 1:1, rm1= 1:13, rm2= 1:5, rm3= 1:5, rm5= 1:1, rm10= 1:5, rm11= 1:5] </font> <br>
-	> &emsp;&emsp;&emsp;&emsp;c. removal scenario <font color="brown", size=2>[options: rm0, rm1, rm2, rm3, rm5, rm10, rm11] </font>
+	> &emsp;&emsp;&emsp;&emsp;a. index of the ST dataset [*options: 1, 2, 3* ] <br>
+	> &emsp;&emsp;&emsp;&emsp;b. total number of single-cell reference datasets [*options per removal scenario; <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;rm0= 1:1, rm1= 1:13, rm2= 1:5, rm3= 1:5, rm5= 1:1, rm10= 1:5, rm11= 1:5* ] <br>
+	> &emsp;&emsp;&emsp;&emsp;c. removal scenario [*options: rm0, rm1, rm2, rm3, rm5, rm10, rm11* ]
 		
 		e.g. command line input for removal of no cell type removal (baseline) & one or more cell type removal scenarios would be then as follows,
 		(1) ./Execute_R_based_methods.sh 1 1 rm0
@@ -157,13 +156,13 @@ You only need to run shell/batch scripts for the results; details about the stan
 		(7) ./Execute_R_based_methods.sh 1 5 rm11
 		
 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <font color="brown", size=2> replace `Execute_R_based_methods.sh` by `Execute_python_based_methods.sh` for executing python-based methods. </font>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; replace `Execute_R_based_methods.sh` by `Execute_python_based_methods.sh` for executing python-based methods. 
 	
 	*The standalone scripts for each deconvolution method expect the command line arguments as below; notice the different versions of argument <font color="red">b </font>*.
 
 	> *a. index of the ST dataset <br>
-	> b. <font color="blue", size=2>for R-based methods: </font> index of single-cell reference datasets [varies per removal scenario] <br>
-	&emsp;&emsp;&emsp;&emsp;<font color="blue", size=2>for Python-based methods: </font> total number of single-cell reference datasets <br>
+	> b. for R-based methods: index of single-cell reference datasets [varies per removal scenario] <br>
+	&emsp;&emsp;&emsp;&emsp;for Python-based methods: total number of single-cell reference datasets <br>
 	> c. path to simulated ST datasets directory <br>
 	> d. path to single-cell reference datasets directory <br>
 	> e. path to save deconvolution results directory* <br>
@@ -191,11 +190,12 @@ You only need to run shell/batch scripts for the results; details about the stan
 
     - **For JSD calculations**:
    
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Get_JSD_results.R `</font>
-	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note: </font> The required command line arguments are as below:<br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;b. <font color="brown", size=2>[optional; default is all scenarios] </font> removal scenarios separated by comma (<font color="brown", size=2>rm0 </font> is included by default) <font color="brown", size=2>[options: rm1, rm2, rm3, rm5, rm10, rm11] </font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c. <font color="brown", size=2>[optional; default is all methods] </font> name of the deconvolution methods separated by comma <br>
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Get_JSD_results.R` *arg1 optional\_arg2 optional\_arg3*</font>
+	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note: </font> The required command line arguments for <font color="blue">`Get_JSD_results.R`</font>script are as below:<br>
+	&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
+	&emsp;&emsp;&emsp;&emsp;b. [*optional; default is all scenarios* ] </font> removal scenarios separated by comma (*rm0* is included by default) [*options: rm1, rm2, rm3, rm5, rm10, rm11* ]  <br>
+	&emsp;&emsp;&emsp;&emsp;c. [*optional; default is all methods*] name of the deconvolution methods separated by comma <br>
 		
 		e.g.1, command line input for calculating JSD metrics for methods CARD and RCTD with 1st simulated ST data and removal of one, two & three cell type scenarios would be then as follows,
 		Rscript Get_JSD_results.R 1 "rm1","rm2","rm3"  "CARD","RCTD"
@@ -205,22 +205,27 @@ You only need to run shell/batch scripts for the results; details about the stan
 
    - **For RMSE calculations**:
 
-   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R` </font> <br> 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Get_RMSE_results.R` </font>
-   > &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> The required command line arguments are as below:<br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;b. removal scenarios separated by comma (<font color="brown", size=2>rm0 </font> is included by default) <font color="brown", size=2>[options: rm1, rm2, rm3] </font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c. <font color="brown", size=2>[optional; default is all methods] </font> name of the deconvolution methods separated by comma <br>
+   &emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R` </font> <br> 
+	&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Get_RMSE_results.R` *arg1 optional\_arg2 optional\_arg3* </font>
+   > &emsp;&emsp;&emsp;&emsp;<font color="red">Note: </font> The required command line arguments for <font color="blue">`Get_RMSE_results.R`</font>script are as below:<br>
+	&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
+	&emsp;&emsp;&emsp;&emsp;b. [*optional; default is all scenarios* ]  removal scenarios separated by comma (*rm0* is included by default) [*options: rm1, rm2, rm3, rm5, rm10, rm11* ]  <br>
+	&emsp;&emsp;&emsp;&emsp;c. [*optional; default is all methods* ] name of the deconvolution methods separated by comma <br>
 		
-		e.g., command line input for calculating RMSE metrics for methods CARD and RCTD with 1st simulated ST data and removal of one, two & three cell type scenarios would be then as follows,
-		Rscript Get_RMSE_results.R 1 "rm1","rm2","rm3"
+		e.g.1, command line input for calculating RMSE metrics for methods CARD and RCTD with 1st simulated ST data and removal of one, two & three cell type scenarios would be then as follows,
+		Rscript Get_RMSE_results.R 1 "rm1","rm2","rm3"  "CARD","RCTD"
+		
+		e.g.2, command line input for calculating RMSE metrics for all methods with 1st simulated ST data and all removal of cell type scenarios would be then as follows,
+		Rscript Get_RMSE_results.R 1
 
    - **For cell type reassignment calculations:** <br>
    
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Get_celltype_assignment_results.R `</font>
-	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note: </font> The required command line arguments are as below:<br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;b. <font color="brown", size=2>[optional; default is all scenarios] </font> removal scenarios separated by comma (<font color="brown", size=2>rm0 </font> is included by default) <font color="brown", size=2>[options: rm1, rm2, rm3, rm5, rm10, rm11] </font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c. <font color="brown", size=2>[optional; default is all methods] </font> name of the deconvolution methods separated by comma <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Get_celltype_assignment_results.R` *arg1 arg2 optional\_arg3*</font>
+	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note: </font> The required command line arguments for <font color="blue">`Get_celltype_assignment_results.R`</font> script are as below:<br>
+	&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
+	&emsp;&emsp;&emsp;&emsp;b. removal scenarios separated by comma (*rm0* is included by default) [*options: rm1, rm2, rm3* ] <br>
+	&emsp;&emsp;&emsp;&emsp;c. [*optional; default is all methods* ] name of the deconvolution methods separated by comma <br>
 		
 		e.g., command line input for calculating cell type reassignment for method CARD and RCTD with 1st simulated ST data and removal of one, two & three cell type scenarios would be then as follows,
 		Rscript Get_celltype_assignment_results.R "CARD","RCTD" 1 "rm1","rm2","rm3"    
@@ -237,23 +242,23 @@ You only need to run shell/batch scripts for the results; details about the stan
    
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Celltype_correlation.R `</font> <br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Fig_celltype_assignments.R`</font> <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Fig_celltype_assignments.R` *arg1*</font> <br>
    	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> <font color="blue">`Fig_celltype_assignments.R`</font> expects command line arguments as below:<br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
    
    - Generate plots for JSD/RMSE plots for all cell type removal scenarios using commands as below;
    
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Fig_jsd_rmse_plots.R`</font> <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Fig_jsd_rmse_plots.R` *arg1*</font> <br>
 	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> <font color="blue">`Fig_jsd_rmse_plots.R`</font> expects command line arguments as below; (<font color="brown" size=2>list of methods and removal scenarios are adapted from JSD/RMSE calculations in Module-4 </font>)<br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
 
    - Generate summary funky plot for an overview of ranking of deconvolution methods across all the removal scenarios using commands as below;
    
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Funky_plots.R`</font> <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Funky_plots.R` *arg1*</font> <br>
 	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> <font color="blue">`Funky_plots.R`</font> expects command line arguments as below;<br>
-	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset <font color="brown", size=2>[options: 1, 2, 3] </font> <br>
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
 
 <br>
 <br>
