@@ -12,8 +12,6 @@
 #### Initialize the environment ####
 source("Init_env.R")
 
-library("wrMisc")
-
 # index of simulated ST dataset
 # index of single-cell reference dataset
 # path to st data
@@ -47,14 +45,14 @@ start_time <- Sys.time()
 sc.ref.data.metadata <-
   sc.ref.data@meta.data %>% dplyr::select(blue.main) %>% data.frame()
 sc.ref.data.metadata$sampleInfo <- "sample1" # suggested by developer of CARD
-head(sc.ref.data.metadata)
+# head(sc.ref.data.metadata)
 
 print("before CARD obejct")
 # creating card object
 CARD_obj = CARD::createCARDObject(
   sc_count = sc.ref.data@assays$RNA@counts,
   sc_meta = sc.ref.data.metadata,
-  spatial_count = spatial.count.matrix,
+  spatial_count = as.matrix(spatial.count.matrix),
   spatial_location = spatial.meta.data,
   ct.varname = "blue.main",
   ct.select = unique(sc.ref.data$blue.main),
@@ -75,8 +73,6 @@ print(paste0(
 
 results.CARD <- as.matrix(results.CARD@Proportion_CARD)
 results.CARD <- results.CARD[, order(colnames(results.CARD))]
-
-print(getwd())
 
 write.csv(results.CARD,
           file = paste0(Method_Res, "CARD/results.CARD.", z, "-", y, ".csv"))

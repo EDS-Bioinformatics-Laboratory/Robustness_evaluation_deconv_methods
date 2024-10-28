@@ -21,7 +21,6 @@ import matplotlib as mpl
 import subprocess
 import os
 import cell2location
-import scvi
 from matplotlib import rcParams
 
 rcParams["pdf.fonttype"] = 42  # enables correct plotting of text
@@ -31,9 +30,9 @@ from cell2location.utils.filtering import filter_genes
 from cell2location.models import RegressionModel
 
 import sys
+import jax
 
-
-# index of single-cell reference dataset
+# scvi.settings.seed = 0
 
 z = int(sys.argv[1])  # index of simulated ST dataset
 y = int(sys.argv[2])  # number of single-cell reference datasets
@@ -41,11 +40,11 @@ arg3 = str(sys.argv[3])  # path to st data
 arg4 = str(sys.argv[4])  # path to sc-ref data
 arg5 = str(sys.argv[5])  # path to saving results
 
-# update 10 oct 2022
-# the range(z, z+2) means the algorithm will start with 'z'th ST data and uses 'z+2'th ST data
-# update 30 dec 2022
-# the range(z, z+1) means the algorithm will start with 'z'th ST data and uses 'z+1'th ST data
-# calculates for a single ST dataset at a time
+# value for hyper parameter
+if (z == 3):
+  num_cells = 5
+else:
+    num_cells = 13
 
 import time
 
@@ -61,18 +60,18 @@ for y in range(1, y + 1):
 
     sc_ref_data.X = csr_matrix(sc_ref_data.X)
 
-    # scanpy filtering
-    sc.pp.filter_genes(sc_ref_data, min_cells = 1)
-    sc.pp.filter_cells(sc_ref_data, min_genes = 1)
+    # # scanpy filtering
+    # sc.pp.filter_genes(sc_ref_data, min_cells = 0)
+    # sc.pp.filter_cells(sc_ref_data, min_genes = 0)
 
-    # cell2location filtering of genes
-    selected = filter_genes(
-        sc_ref_data,
-        cell_count_cutoff = 5,
-        cell_percentage_cutoff2 = 0.03,
-        nonz_mean_cutoff = 2,
-    )
-    sc_ref_data = sc_ref_data[:, selected].copy()
+    # # cell2location filtering of genes
+    # selected = filter_genes(
+    #     sc_ref_data,
+    #     cell_count_cutoff = 5,
+    #     cell_percentage_cutoff2 = 0.03,
+    #     nonz_mean_cutoff = 2,
+    # )
+    # sc_ref_data = sc_ref_data[:, selected].copy()
 
     # preparing anndata for sc ref data
     cell2location.models.RegressionModel.setup_anndata(
@@ -82,9 +81,9 @@ for y in range(1, y + 1):
     # create and train model for sc ref data
     mod = RegressionModel(sc_ref_data)
     mod.train(max_epochs = 1000, batch_size = 2500, train_size = 1, lr = 0.002, use_gpu = True)
-    # mod.plot_history()
-    # plt.savefig("sc_epochs.pdf")
-
+    # mod.plot_history(10)
+    # plt.savefig("cell2loc_sc_epochs.pdf")
+        
     # export estimated cell abundance (summary of posterior distribution
     sc_ref_data = mod.export_posterior(
         sc_ref_data,
@@ -111,6 +110,7 @@ for y in range(1, y + 1):
     z = int(sys.argv[1])
     for z in range(z, z + 1):
         spatial_data = sc.read_h5ad(arg3 + "spatial_data." + str(z) + ".h5ad")
+        spatial_data.var_names = spatial_data.var['features']
 
         spatial_data.X = csr_matrix(spatial_data.X)
 
@@ -128,16 +128,15 @@ for y in range(1, y + 1):
             cell_state_df = inf_aver,
             # the expected average cell abundance: tissue-dependent
             # hyper-prior which can be estimated from paired histology:
-            # N_cells_per_location=30,
-            N_cells_per_location = 13,
+            N_cells_per_location = num_cells,
             # hyperparameter controlling normalisation of
             # within-experiment variation in RNA detection:
             # suggested by developer
-            detection_alpha = 200,
+            detection_alpha = 200
         )
         mod.train(max_epochs = 10000, batch_size = None, train_size = 1, use_gpu = True)
         # mod.plot_history(1000)
-        # plt.savefig("spatial_epochs.pdf")
+        # plt.savefig("cell2loc_spatial_epochs.pdf")
 
         # export estimated cell abundance (summary of posterior distribution)
         spatial_data = mod.export_posterior(

@@ -17,6 +17,13 @@ source("Init_env.R")
 # path to sc reference data
 # path to saving results
 
+# library("doSNOW")
+# library("doParallel")
+
+renv_lib_paths <- readLines("../../renv_library_paths.txt")
+Sys.setenv("R_LIBS_USER"=renv_lib_paths[1])
+print(Sys.getenv("R_LIBS_USER"))
+
 args <- commandArgs(trailingOnly = TRUE)
 z <- args[1]
 y <- args[2]
@@ -29,6 +36,15 @@ Method_Res <- args[5]
 sc.ref.data <- readRDS(paste0(sc_data, "sc.ref.data.", y, ".rds"))
 Idents(sc.ref.data) <- "blue.main"
 
+# # RCTD works with raw counts, thus we use RNA assay from the integrated dataset
+# # by subsetting the dataset on the genes and the cells list 
+# sc.ref.data.raw <- readRDS("../../1_Generate_sc_ref_data/Results/sc.combined.nor.rds")
+# sc.ref.data.raw <- subset(sc.ref.data.raw,
+#                           features = rownames(sc.ref.data@assays$RNA@counts),
+#                           cells = colnames(sc.ref.data@assays$RNA@counts))
+# 
+# sc.ref.data <- sc.ref.data.raw
+
 # cell types in the single-cell reference data without NA in the list
 celltypes <- unique(sc.ref.data$blue.main)
 
@@ -40,6 +56,7 @@ spatial.meta.data <- readRDS(paste0(Spatial_data, "coord.", z, ".rds"))
 n.spots <- dim(spots.metadata)[1]
 
 start_time <- Sys.time()
+
 # single cell metadata
 barcodes <- Cells(sc.ref.data)
 sc.data.meta.data <-
@@ -58,11 +75,10 @@ cell_types.RCTD <- as.factor(cell_types.RCTD)
 nUMI.RCTD <- sc.data.meta.data$nUMI
 names(nUMI.RCTD) <- sc.data.meta.data$barcode
 
-reference.RCTD <-
-  spacexr::Reference(sc.ref.data@assays$RNA@counts,
-            cell_types.RCTD,
-            nUMI.RCTD,
-            n_max_cells = 10000)
+reference.RCTD <- spacexr::Reference(counts = sc.ref.data@assays$RNA@counts,
+                                     cell_types = cell_types.RCTD,
+                                     nUMI = nUMI.RCTD,
+                                     n_max_cells = 10000)
 
 # adding barcodes column to the spatial coordinate metadata
 spatial.meta.data <- cbind(rownames(spots.metadata), spatial.meta.data)
@@ -73,10 +89,9 @@ print("Creating spatial RNA constructor")
 rownames(spatial.meta.data) <- spatial.meta.data$barcodes
 spatial.meta.data$barcodes <- NULL
 
-puck.RCTD <-
-  spacexr::SpatialRNA(spatial.meta.data,
-             spatial.count.matrix,
-             colSums(spatial.count.matrix))
+puck.RCTD <- spacexr::SpatialRNA(coords = spatial.meta.data,
+                                 counts = spatial.count.matrix,
+                                 nUMI = colSums(spatial.count.matrix))
 
 # creating RCTD object and executing RCTD
 print("Running RCTD(spacexr) deconvolution algorithm")

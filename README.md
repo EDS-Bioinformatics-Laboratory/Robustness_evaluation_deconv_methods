@@ -84,12 +84,16 @@ This directory enlists the software environment specifications used for various 
 	
 	**II.**	If you do not already have conda installed on your machine, please install it by following [<font color="blue"> steps to install conda</font>](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 	
-	**III**. To create a conda virtual environment similar to the analysis use the <font color="brown">*environment.yml*</font> file available in the root directory or under `0_SoftwareEnvironment/Python` directory. The command for creating conda virtual environment from command line terminal/prompt is as below;
+	**III**. To create a conda virtual environment similar to the analysis, use the <font color="brown">*environment.yml*</font> file available in the root directory or under `0_SoftwareEnvironment/Python` directory. The command for creating a conda virtual environment from the command line terminal/prompt is as below;
 	
 	&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`conda env create -f environment.yml`</font> 
 
-	> **<font color="red">Note:</font>** Depending on your platform(OS) installation of few python packages/libraries might 	fail, please check the logs/status of the environment creation carefully.
+	> **<font color="red">Note:</font>** Depending on your platform(OS), installation of a few Python packages/libraries might fail; please check the logs/status of the environment creation carefully.
 	
+<br>
+<br>
+**<font color="red" size=4>Disclaimer:</font>** 
+<font color="red">The following instructions are for reproducing the results using the command-line terminal/prompt, not RStudio or Jupyter Notebook. </font>
 <br>
 <br>
 
@@ -259,7 +263,12 @@ You only need to run shell/batch scripts for the results; details about the stan
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Funky_plots.R` *arg1*</font> <br>
 	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> <font color="blue">`Funky_plots.R`</font> expects command line arguments as below;<br>
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
+	
+	- For validating the reproduction results and cross-checking the numbers with the original analysis below R script will generate plots which can be compared with the plots in the original analysis.
 
+	   
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
+	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Validate_numbers.R`</font> <br>
 <br>
 <br>
 <br>

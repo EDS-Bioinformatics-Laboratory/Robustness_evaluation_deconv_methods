@@ -34,6 +34,7 @@ n_cells <- 0
 
 # reading the ST datasets
 spatial.count.matrix <- readRDS(paste0(Spatial_data, "count.matrix.", z, ".rds"))
+spatial.count.matrix <- exprs(Biobase::ExpressionSet(assayData = as.matrix(spatial.count.matrix)))
 spots.metadata <- readRDS(paste0(Spatial_data, "metadata.", z, ".rds"))
 
 # number of spots in the simulated data

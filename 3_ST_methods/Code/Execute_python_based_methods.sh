@@ -2,11 +2,16 @@
 
 # command line arguments provided to the scripts are,
 
-# number of st datasets
+# index of st datasets
 # number of sc-ref datasets
-# path to st data
-# path to sc-ref data
-# path to saving results
+# removal scenario
 
-nohup python3 Cell2Location.py $1 $2 $3 $4 $5 &
-nohup python3 Stereoscope.py $1 $2 $3 $4 $5 &
+z=$1
+y=$2
+st="../../2_Simulating_ST_data/Results/Spatial_Data/" # path to st dataset
+sc_ref="../../1_Generate_sc_ref_data/Results/$3/" # path sc reference dataset
+decon_results="../Results/$3/" # path to saving deconvolution results
+
+x="${3}_${y}_${z}"
+nohup python3 Cell2Location.py $1 $2 $st $sc_ref $decon_results > logs/Cell2location_$x.txt &
+nohup python3 Stereoscope.py $1 $2 $st $sc_ref $decon_results > logs/Stereoscope_$x.txt &

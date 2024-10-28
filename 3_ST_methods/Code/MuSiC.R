@@ -5,8 +5,8 @@
 # BiocManager::install("TOAST")
 # 
 # References:
-# https://github.com/Jiaxin-Fan/MuSiC2
-# https://jiaxin-fan.github.io/MuSiC2/articles/introduction.html
+# https://github.com/xuranw/MuSiC
+# https://xuranw.github.io/MuSiC/articles/MuSiC.html#reference
 # https://www.biorxiv.org/content/10.1101/2022.05.08.491077v1.full
 # 
 # Implemented by Utkarsh Mahamune
@@ -15,8 +15,6 @@
 
 #### Initialize the environment ####
 source("Init_env.R")
-
-library("xbioc")
 
 # index of simulated ST dataset
 # index of single-cell reference dataset
@@ -47,10 +45,12 @@ n.spots <- dim(spots.metadata)[1]
 
 start_time <- Sys.time()
 
-exp_sc <- as.SingleCellExperiment(sc.ref.data)
-exp_sc
+# adding cells names as samples under cells column in single cell reference data
+sc.ref.data@meta.data$cells <- rownames(sc.ref.data@meta.data)
 
-exp_st <- scater::exprs(Biobase::ExpressionSet(assayData = as.matrix(spatial.count.matrix)))
+exp_sc <- as.SingleCellExperiment(sc.ref.data)
+
+exp_st <- exprs(Biobase::ExpressionSet(assayData = as.matrix(spatial.count.matrix)))
 
 results.MuSiC <- MuSiC::music_prop(bulk.mtx = exp_st,
                                    sc.sce = exp_sc,

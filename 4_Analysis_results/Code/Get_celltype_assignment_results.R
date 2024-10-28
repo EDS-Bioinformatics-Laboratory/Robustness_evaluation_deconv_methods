@@ -18,21 +18,31 @@
 # Bioinformatics Laboratory | Amsterdam UMC (Location AMC)
 ################################################################################
 
-
 # Initialize environment
 source("Init_env.R")
 
-methods_ <- c("Cell2Location",
-              "RCTD",
-              "CARD",
-              "SCDC",
-              "MuSiC",
-              "Stereoscope",
-              "Seurat",
-              "SPOTlight")
+args <- commandArgs(trailingOnly = TRUE)
+st_num <- args[1]
+rm_scenarios <- strsplit(args[2], ",")[[1]]
+
+# all deconvolution methods are considered if command line arg is missing
+if (length(args)<=2) {
+  methods_ <- c("Cell2Location",
+                "RCTD",
+                "CARD",
+                "SCDC",
+                "MuSiC",
+                "Stereoscope",
+                "Seurat",
+                "SPOTlight")
+} else {
+  methods_ <- strsplit(args[3], ",")[[1]]
+}
+
 
 # path to deconvolution methods results for baseline scenarios
 b_Method_Res <- "../../3_ST_methods/Results/rm0/"
+decon_results <- "../../3_ST_methods/Results/"
 
 
 # function for calculating cell type assignment
@@ -77,7 +87,6 @@ get_celltype_results <- function(z, y, Method_Res, dflist_, num_ct) {
   
   # dflist[ , , ] --> removed celltype, all celltypes, method
   
-  # results for removal scernario
   if ("Cell2Location" %in% methods_) {
     results.Cell2Loc <- 
       utils::read.csv(paste0(Method_Res, "Cell2Location/Cell2Location.", z, "-", y, ".csv"), row.names = 1)
@@ -116,7 +125,7 @@ get_celltype_results <- function(z, y, Method_Res, dflist_, num_ct) {
     }
     
     if (file.exists(paste0(b_Method_Res, "CARD/results.CARD.", z, "-", "1.csv")) != T) {
-      b.results.CARD <- matrix(NA, nrow = 1600, ncol = num_ct) %>% data.frame()
+      b.results.CARD <- matrix(NA, nrow = 1600, ncol = 13) %>% data.frame()
       colnames(b.results.CARD) <- colnames(b.results.RCTD)
       rownames(b.results.CARD) <- sprintf("Spot_%s",seq(1:1600))
       message("CARD ", z, y)
@@ -166,7 +175,7 @@ get_celltype_results <- function(z, y, Method_Res, dflist_, num_ct) {
     }
     
     if (file.exists(paste0(b_Method_Res, "Seurat/results.Seurat.", z, "-", "1.csv")) != T) {
-      b.results.Seurat <- matrix(NA, nrow = 1600, ncol = num_ct) %>% data.frame()
+      b.results.Seurat <- matrix(NA, nrow = 1600, ncol = 13) %>% data.frame()
       colnames(b.results.Seurat) <- colnames(b.results.RCTD)
       rownames(b.results.Seurat) <- sprintf("Spot_%s",seq(1:1600))
       message("Seurat ", z, y)
@@ -193,87 +202,83 @@ get_celltype_results <- function(z, y, Method_Res, dflist_, num_ct) {
 }
 
 
-dflist.list1 <- c() # for removal of 1 cell type scenarios
-dflist.list2 <- c() # for removal of 2 cell types scenarios
-dflist.list3 <- c() # for removal of 3 cell types scenarios
-dflist.list5 <- c() # for removal of 5 cell types scenarios
-dflist.list10 <- c() # for removal of 10 cell types scenarios
-
-for (d in 1:4) {
-  
+if ("rm1" %in% rm_scenarios) {
   # removal of one celltype
-  Method_Res <- "../../3_ST_methods/Results/rm1/"
-
+  Method_Res <- paste0(decon_results, "rm1/")
+  
   # param: total # sc reference datasets, total # celltypes, # methods
   dflist_ <- array(-99, dim = c(13, 13, length(methods_)))
-
+  
   for (y in 1:13) {
-    for (z in d:d) {
-      dflist_ <- get_celltype_results(z, y, Method_Res, dflist_, 12)
-    }
+    dflist_ <- get_celltype_results(st_num, y, Method_Res, dflist_, 12)
   }
-  dflist.list1[[d]] <- dflist_
-
-
-  # removal of two celltypes
-  Method_Res <- "../../3_ST_methods/Results/rm2/"
-
-  # param: total # sc reference datasets, total # celltypes, # methods
-  dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
-
-  for (y in 1:5) {
-    for (z in d:d) {
-      dflist_ <- get_celltype_results(z, y, Method_Res, dflist_, 11)
-    }
-  }
-  dflist.list2[[d]] <- dflist_
-
-
-  # removal of three celltypes
-  Method_Res <- "../../3_ST_methods/Results/rm3/"
-
-  # param: total # sc reference datasets, total # celltypes, # methods
-  dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
-
-  for (y in 1:5) {
-    for (z in d:d) {
-      dflist_ <- get_celltype_results(z, y, Method_Res, dflist_, 10)
-    }
-  }
-  dflist.list3[[d]] <- dflist_
-  
-  
-  # removal of five celltypes
-  Method_Res <- "../../3_ST_methods/Results/rm5/"
-  
-  # param: total # sc reference datasets, total # celltypes, # methods
-  dflist_ <- array(-99, dim = c(1, 13, length(methods_)))
-  
-  for (y in 1:1) {
-    for (z in d:d) {
-      dflist_ <- get_celltype_results(z, y, Method_Res, dflist_, 8)
-    }
-  }
-  dflist.list5[[d]] <- dflist_
-  
-  
-  # removal of ten celltypes
-  Method_Res <- "../../3_ST_methods/Results/rm10/"
-  
-  # param: total # sc reference datasets, total # celltypes, # methods
-  dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
-  
-  for (y in 1:5) {
-    for (z in d:d) {
-      dflist_ <- get_celltype_results(z, y, Method_Res, dflist_, 3)
-    }
-  }
-  dflist.list10[[d]] <- dflist_
+  saveRDS(dflist_, file = paste0(Results, "CT_assign_rm1.", st_num,"_ST.rds"))
 }
 
 
-saveRDS(dflist.list1, file = paste0(Results, "CT_assign_rm1.RDS"))
-saveRDS(dflist.list2, file = paste0(Results, "CT_assign_rm2.RDS"))
-saveRDS(dflist.list3, file = paste0(Results, "CT_assign_rm3.RDS"))
-saveRDS(dflist.list5, file = paste0(Results, "CT_assign_rm5.RDS"))
-saveRDS(dflist.list10, file = paste0(Results, "CT_assign_rm10.RDS"))
+if ("rm2" %in% rm_scenarios) {
+  # removal of two celltypes
+  Method_Res <- paste0(decon_results, "rm2/")
+  
+  # param: total # sc reference datasets, total # celltypes, # methods
+  dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
+  
+  for (y in 1:5) {
+    dflist_ <- get_celltype_results(st_num, y, Method_Res, dflist_, 11)
+  }
+  saveRDS(dflist_, file = paste0(Results, "CT_assign_rm2.", st_num,"_ST.rds"))
+}
+
+
+if ("rm3" %in% rm_scenarios) {
+  # removal of three celltypes
+  Method_Res <- paste0(decon_results, "rm3/")
+  
+  # param: total # sc reference datasets, total # celltypes, # methods
+  dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
+  
+  for (y in 1:5) {
+    dflist_ <- get_celltype_results(st_num, y, Method_Res, dflist_, 10)
+  }
+  saveRDS(dflist_, file = paste0(Results, "CT_assign_rm3.", st_num,"_ST.rds"))
+}
+
+
+# if ("rm5" %in% rm_scenarios) {
+#   # removal of five celltypes
+#   Method_Res <- paste0(decon_results, "rm5/")
+#   
+#   # param: total # sc reference datasets, total # celltypes, # methods
+#   dflist_ <- array(-99, dim = c(1, 13, length(methods_)))
+#   
+#   for (y in 1:1) {
+#     dflist_ <- get_celltype_results(st_num, y, Method_Res, dflist_, 8)
+#   }
+#   saveRDS(dflist_, file = paste0(Results, "CT_assign_rm5.RDS"))
+# }
+# 
+# if ("rm10" %in% rm_scenarios) {
+#   # removal of ten celltypes
+#   Method_Res <- paste0(decon_results, "rm10/")
+#   
+#   # param: total # sc reference datasets, total # celltypes, # methods
+#   dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
+#   
+#   for (y in 1:5) {
+#     dflist_ <- get_celltype_results(st_num, y, Method_Res, dflist_, 3)
+#   }
+#   saveRDS(dflist_, file = paste0(Results, "CT_assign_rm10.RDS"))
+# }
+# 
+# if ("rm11" %in% rm_scenarios) {
+#   # removal of ten celltypes
+#   Method_Res <- paste0(decon_results, "rm11/")
+#   
+#   # param: total # sc reference datasets, total # celltypes, # methods
+#   dflist_ <- array(-99, dim = c(5, 13, length(methods_)))
+#   
+#   for (y in 1:5) {
+#     dflist_ <- get_celltype_results(st_num, y, Method_Res, dflist_, 2)
+#   }
+#   saveRDS(dflist_, file = paste0(Results, "CT_assign_rm11.RDS"))
+# }

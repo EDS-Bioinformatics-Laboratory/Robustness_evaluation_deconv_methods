@@ -1,5 +1,5 @@
 #### Header start ##############################################################
-# We create simulated datasets using the single cell RNA-sequencing reference
+# We create simulated ST datasets using the single cell RNA-sequencing reference
 # data with 13 cell types (cell clusters) and at max 300 cells per cell type
 # 
 # This script generates spatial count matrix data, spatial spot metadata
@@ -9,8 +9,6 @@
 # Spatial spot metadata: spots * cell types matrix
 # Spatial co-ordinate metadata: spots * X-Y coordinate columns
 #
-# updated version 30 June 2022
-#
 #
 # command line arguments
 # variable parameters for generation of ST datasets
@@ -18,7 +16,7 @@
 # 2. max number of cell types per spot
 # 3. min number of cells per spot
 # 4. max number of cells per spot
-# 5. index of simulated ST dataset (either 1/2/3/4)
+# 5. index of simulated ST dataset (either 1/2/3)
 #
 # Implemented by Utkarsh Mahamune
 # Bioinformatics Laboratory | Amsterdam UMC (Location AMC)
@@ -30,9 +28,12 @@ source("Init_env.R")
 
 start_time <- Sys.time()
 
-
 args <- commandArgs(trailingOnly = TRUE)
-# args <- c(4, 8, 10, 15, 1)
+# 1. min number of cell types per spot
+# 2. max number of cell types per spot
+# 3. min number of cells per spot
+# 4. max number of cells per spot
+# 5. index of simulated ST dataset (either 1/2/3)
 
 
 # fixed parameters for generation of ST datasets
@@ -55,6 +56,9 @@ celltypes <- sort(unique(sc.ref.data$blue.main))
 # number of spots in the simulated data
 n.spots <- fix_args[3]
 
+
+# for reproducibility
+set.seed(167)
 
 # collect all cells of a cell type to generate count matrix and
 # randomly select 5 cells out of it for calculating average read counts
@@ -90,6 +94,7 @@ get_counts <- function(celltypes, sc.ref.data) {
   return(count.celltypes)
 }
 
+
 # get spot distribution and metadata
 generate_spot_distribution <- lapply(1:n.spots, function(i) {
   # Select number of cell types randomly from the single-cell reference data
@@ -114,9 +119,19 @@ generate_spot_distribution <- lapply(1:n.spots, function(i) {
     nr_cell_per_spot <- stats::rmultinom(n = 1, size = nr_cells, prob = prob_)
   }
   
-  spot.metadata <- t(as.matrix(prob_)) %>%
+  # probabilities to get the number of cells per celltype by multinomial 
+  # distribution is used as spots metadata
+  spot.metadata.prob <- t(as.matrix(prob_)) %>%
     as.data.frame(row.names = paste0("Spot_", i), check.names = T)
+  colnames(spot.metadata.prob) <- celltype.pool
+  
+  # proportions for each celltype present in a spot after multinomial distribution
+  # is used as spots metadata
+  spot.metadata <- t(as.matrix(nr_cell_per_spot/sum(nr_cell_per_spot))) %>%
+    as.data.frame(row.names = paste0("Spot_", i), check.names = T)
+  
   colnames(spot.metadata) <- celltype.pool
+  
   
   # getting average counts for a cell type using 5 random cells of the same
   # celltype, we aim to have different cells for each spot and thus calculate
@@ -143,19 +158,17 @@ generate_spot_distribution <- lapply(1:n.spots, function(i) {
   
   rownames(spot.count) <- names(rowSums(as.matrix(rowSums(count.celltypes))))
   colnames(spot.count) <- paste0("Spot_", i)
-  # as.matrix(spot.count)
   
-  return(list(spot.count, spot.metadata))
+  return(list(spot.count, spot.metadata, spot.metadata.prob))
 })
 
-# getting the count matrix for all spots
+## getting the count matrix for all spots
 spatial.count.matrix <-
   map(generate_spot_distribution, 1) %>% base::Reduce(function(m1, m2) {
     cbind(unlist(m1), unlist(m2))
   }, .)
 
-# getting spot metadata for all spots
-# print("Generating metadata for spatial transcriptomics data")
+## getting spot metadata for all spots with proportions from multinomial dist
 spots.metadata <- map(generate_spot_distribution, 2) %>%
   dplyr::bind_rows() %>%
   data.frame(check.names = F)
@@ -174,7 +187,27 @@ if (sum(celltypes %in% colnames(spots.metadata)) == length(celltypes)) {
   spots.metadata <- spots.metadata[, celltypes]
 }
 
-# get roughly equal number of rows and columns for the ST data co-ordinates
+## getting spot metadata for all spots with probabilities used for multinomial dist
+spots.metadata.prob <- map(generate_spot_distribution, 3) %>%
+  dplyr::bind_rows() %>%
+  data.frame(check.names = F)
+
+# check for NA values
+spots.metadata.prob[is.na(spots.metadata.prob)] <- 0
+
+# adding all cell types columns for the spot metadata
+if (sum(celltypes %in% colnames(spots.metadata.prob)) == length(celltypes)) {
+  spots.metadata.prob <- spots.metadata.prob[, celltypes]
+} else {
+  missing_labels <-
+    celltypes[which(!celltypes %in% colnames(spots.metadata.prob))]
+  # if a cell type is absent set the value to 0
+  spots.metadata.prob[missing_labels] <- 0
+  spots.metadata.prob <- spots.metadata.prob[, celltypes]
+}
+
+
+## get roughly equal number of rows and columns for the ST data co-ordinates
 n.spots <- as.integer(n.spots)
 row_col <- function(n.spots) {
   c = as.integer(n.spots ** 0.5 + 0.5)
@@ -200,6 +233,7 @@ print(message("Time taken for creating simulated ST dataset: ",
 # saving the simulated ST datasets components
 saveRDS(spatial.count.matrix, file = paste0(fix_args[2], "count.matrix.", args[5], ".rds"))
 saveRDS(spots.metadata, file = paste0(fix_args[2], "metadata.", args[5], ".rds"))
+saveRDS(spots.metadata.prob, file = paste0(fix_args[2], "metadata.prob.", args[5], ".rds"))
 saveRDS(spatial.coord, file = paste0(fix_args[2], "coord.", args[5], ".rds"))
 
 # generating .h5ad version of spatial (count matrix) data
@@ -212,4 +246,6 @@ SeuratDisk::SaveH5Seurat(spatial.count.matrix.h5, overwrite = T,
 SeuratDisk::Convert(paste0(fix_args[2], "spatial_data.", args[5], ".h5Seurat"),
         dest = "h5ad",
         overwrite = T)
+
+
 

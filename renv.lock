@@ -1012,8 +1012,8 @@
       "Package": "SeuratDisk",
       "Version": "0.0.0.9019",
       "Source": "GitHub",
-      "Remotes": "satijalab/seurat-data",
       "RemoteType": "github",
+      "Remotes": "satijalab/seurat-data",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "seurat-disk",
       "RemoteUsername": "mojaveazure",
@@ -1877,6 +1877,20 @@
       ],
       "Hash": "2dc413572eb42475179bfe0afabd2adf"
     },
+    "doSNOW": {
+      "Package": "doSNOW",
+      "Version": "1.0.20",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "foreach",
+        "iterators",
+        "snow",
+        "utils"
+      ],
+      "Hash": "4bf4423d2c8b68c93b47e32ec554c2f1"
+    },
     "dotCall64": {
       "Package": "dotCall64",
       "Version": "1.1-1",
@@ -2161,9 +2175,9 @@
     },
     "funkyheatmap": {
       "Package": "funkyheatmap",
-      "Version": "0.3.0",
+      "Version": "0.5.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "RColorBrewer",
@@ -2176,12 +2190,13 @@
         "ggplot2",
         "grDevices",
         "jsonlite",
+        "patchwork",
         "purrr",
         "stringr",
         "tibble",
         "tidyr"
       ],
-      "Hash": "d59700d785d3f9e03f7ac5e2f41bb6ce"
+      "Hash": "eedee2c78f3d6ae372e1bc3079896c28"
     },
     "futile.logger": {
       "Package": "futile.logger",
@@ -2496,6 +2511,16 @@
         "tidyr"
       ],
       "Hash": "006a64911e79a7dc7cbf839a57baaff4"
+    },
+    "gitcreds": {
+      "Package": "gitcreds",
+      "Version": "0.1.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "ab08ac61f3e1be454ae21911eb8bc2fe"
     },
     "globals": {
       "Package": "globals",
@@ -3869,20 +3894,34 @@
       ],
       "Hash": "76c9e04c712a05848ae7a23d2f170a40"
     },
+    "remotes": {
+      "Package": "remotes",
+      "Version": "2.5.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods",
+        "stats",
+        "tools",
+        "utils"
+      ],
+      "Hash": "3ee025083e66f18db6cf27b56e23e141"
+    },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.5",
+      "Version": "1.0.7",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "renv",
       "RemoteUsername": "rstudio",
-      "RemoteRef": "0e780cba5aa8d5b8c1d3bce9c9233e0349929eb6",
-      "RemoteSha": "0e780cba5aa8d5b8c1d3bce9c9233e0349929eb6",
+      "RemoteRef": "265a03869234f07c9171b6829d09427577e19baa",
+      "RemoteSha": "265a03869234f07c9171b6829d09427577e19baa",
       "Requirements": [
         "utils"
       ],
-      "Hash": "31427d2aaca0ede026b61eb5db81d0ca"
+      "Hash": "e202648e24a14067de0d17dc8920f1a1"
     },
     "reprex": {
       "Package": "reprex",
@@ -4998,8 +5037,8 @@
       "Package": "xbioc",
       "Version": "0.1.19",
       "Source": "GitHub",
-      "Remotes": "renozao/pkgmaker@develop",
       "RemoteType": "github",
+      "Remotes": "renozao/pkgmaker@develop",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "xbioc",
       "RemoteUsername": "renozao",

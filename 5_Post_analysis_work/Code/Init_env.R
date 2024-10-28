@@ -11,22 +11,28 @@
 # Clearing work space
 rm(list = ls())
 
-# Setting up current working directory with path of this file
-if (rstudioapi::isAvailable()) {
-  message("running in RStudio")
-  currentPath = rstudioapi::getActiveDocumentContext()$path
-  setwd(dirname(currentPath))
-} else {
-  message("running in Terminal")
-}
+# adding renv library paths to .libPaths()
+renv_lib_paths <- readLines("../../renv_library_paths.txt")
+.libPaths(c(.libPaths(), renv_lib_paths))
+
+# if (rstudioapi::isAvailable()) {
+#   message("running in RStudio") 
+#   currentPath = rstudioapi::getActiveDocumentContext()$path
+#   setwd(dirname(currentPath))
+# }
 
 # Paths to different processing folders for better accessibility
 Data <- "../../Data/Processed/"
 Results <- "../Results/"
 Settings <- "../Settings/"
+logs <- "logs"
 
 if (dir.exists(Results) != T) {
   dir.create(Results, mode = "0777")
+}
+
+if (dir.exists(logs) != T) {
+  dir.create(logs, mode = "0777")
 }
 
 # Loading and citing the packages
@@ -65,22 +71,15 @@ packagesList <-
   )
 
 
-# write citations for the packages loaded in the session
-fileConn <- file(paste0(Settings, "citation_renv_R4.1.2.txt"), "wt")
-
 for (pkg in packagesList) {
-  # library(pkg, character.only = TRUE)
-  suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-  suppressWarnings(writeLines(c(capture.output(toBibtex(citation(pkg)))), fileConn))
-  # message("Package ", pkg, " with version ", packageVersion(pkg))
+  suppressWarnings(suppressPackageStartupMessages(library(pkg, character.only = TRUE)))
 }
-close(fileConn)
 
-# write session information and citations for each run
-writeLines(
-  capture.output(sessionInfo()),
-  paste0(Settings, "sessionInfo_renv_R4.1.2.txt")
-)
+# write session information for each run
+sink(paste0(Settings, "sessionInfo.txt"))
+sessionInfo()
+sink()
+
 
 # Removing unnecessary variables
-rm(pkg, fileConn, packagesList)
+rm(pkg, packagesList)
