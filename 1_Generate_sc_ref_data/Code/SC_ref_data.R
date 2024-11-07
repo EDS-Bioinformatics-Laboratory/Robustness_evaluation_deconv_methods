@@ -343,7 +343,7 @@ genes.filter.3 <- names(nonz.mean[nonz.mean > 2])
 genes.filter <- union(genes.filter.1, intersect(genes.filter.2, genes.filter.3))
 
 
-# count matrix with filtered genes on the integrated assay
+# count matrix with filtered genes on the RNA assay
 sc.data <-
   CreateSeuratObject(counts = sc.combined@assays$RNA@counts[genes.filter, ],
                      meta.data = sc.combined@meta.data)
