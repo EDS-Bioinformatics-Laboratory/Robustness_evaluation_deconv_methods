@@ -357,15 +357,31 @@ sc.data <- FindVariableFeatures(sc.data,
   RunPCA(npcs = 30, verbose = F) %>%
   RunUMAP(reduction = "pca", dims = 1:30, verbose = F)
 
-
 # removing cells with NA annotations
 sc.data.subset <- sc.data[, !is.na(sc.data@meta.data[, "blue.main"])]
 
+
+# For generating the UMAP representation of the integrated dataset we use
+# integrated assay, but for the downstream analysis we use the RNA assay
+sc.data.int <-
+  CreateSeuratObject(counts = sc.combined@assays$integrated@data,
+                     meta.data = sc.combined@meta.data)
+sc.data.int <- FindVariableFeatures(sc.data.int,
+                                selection.method = "vst",
+                                nfeatures = 3000,
+                                verbose = F) %>%
+  ScaleData(verbose = F) %>%
+  RunPCA(npcs = 30, verbose = F) %>%
+  RunUMAP(reduction = "pca", dims = 1:30, verbose = F)
+
+# removing cells with NA annotations
+sc.data.subset.int <- sc.data.int[, !is.na(sc.data.int@meta.data[, "blue.main"])]
+
 png(paste0(Results, "suppl_fig_1c.png"),
     res = 450, width = 8.4, height = 6, units = "in")
-p2 <- DimPlot(sc.data.subset,
+p2 <- DimPlot(sc.data.subset.int,
               reduction = "umap",
-              cols = get_pallete(length(unique(sc.data.subset$blue.main))),
+              cols = get_pallete(length(unique(sc.data.subset.int$blue.main))),
               label = T,
               repel = T,
               label.size = 2.5,
@@ -388,12 +404,16 @@ idents.use <- data.frame(sort(table(sc.data.subset$blue.main))) %>%
 Idents(sc.data.subset) <- "blue.main"
 sc.data.pro <- subset(sc.data.subset, idents = idents.use$Var1)
 
+Idents(sc.data.subset.int) <- "blue.main"
+sc.data.pro.int <- subset(sc.data.subset.int, idents = idents.use$Var1)
+
 # downsampling cells per cell type (cluster)
 # WhichCells uses sample() function internally to select random cells
 cell.lists <- WhichCells(sc.data.pro, downsample = 300, seed = 15)
 length(cell.lists)
 
-sc.data.pro <- sc.data.pro[, cell.lists]
+sc.data.pro <- sc.data.pro[, cell.lists] # with RNA assay
+sc.data.pro.int <- sc.data.pro.int[, cell.lists] # with integrated assay
 
 
 #### updating cell types names suitable for programming standards
@@ -423,19 +443,20 @@ new.cluster.ids <- c("Adipocytes",
                      "Neutrophils",
                      "NK_cells",
                      "Skeletal_muscle")
-sc.data.pro@meta.data$blue.main <- plyr::mapvalues(x = sc.data.pro@meta.data$blue.main,
-                                                   from = current.cluster.ids,
-                                                   to = new.cluster.ids)
+sc.data.pro.int@meta.data$blue.main <-
+  plyr::mapvalues(x = sc.data.pro.int@meta.data$blue.main,
+                  from = current.cluster.ids,
+                  to = new.cluster.ids)
 
 
 # to get the exact same colors for cell types as that of full dataset
 color_pal <- c("#1B9E77", "#7570B3", "#E7298A", "#66A61E", "#666666", "#B2DF8A",
-               "#33A02C", "#FB9A99", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99",
-               "#B15928")
+               "#33A02C", "#FB9A99", "#FF7F00", "#CAB2D6", "#FFFF99", "#B15928",
+               "#66C2A5")
 
 png(paste0(Results, "suppl_fig_1d.png"),
     res = 450, width = 8.4, height = 6, units = "in")
-p3 <- DimPlot(sc.data.pro,
+p3 <- DimPlot(sc.data.pro.int,
               reduction = "umap",
               cols = color_pal,
               label = T,
@@ -451,4 +472,3 @@ rm(color_pal)
 
 
 saveRDS(sc.data.pro, file = paste0(Results, "sc.ref.data.rds"))
-
