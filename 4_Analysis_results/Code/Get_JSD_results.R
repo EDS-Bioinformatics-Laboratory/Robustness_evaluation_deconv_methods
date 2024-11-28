@@ -36,7 +36,7 @@ if (length(args)<=1) {
 
 # all deconvolution methods are considered if command line arg is missing
 if (length(args)<=2) {
-  methods_ <- c("Cell2Location",
+  methods_ <- c("cell2location",
                 "RCTD",
                 "CARD",
                 "SCDC",
@@ -60,9 +60,9 @@ read_results <- function(z, y, Method_Res) {
   
   list_ <- c()
   
-  spots.metadata <- readRDS(paste0(st_data_path, "metadata.prob.", z, ".rds"))
+  spots.metadata <- readRDS(paste0(st_data_path, "metadata.", z, ".rds"))
   
-  if ("Cell2Location" %in% methods_) {
+  if ("cell2location" %in% methods_) {
     results.Cell2Loc <- 
       utils::read.csv(paste0(Method_Res, "Cell2Location/Cell2Location.", z, "-", y, ".csv"), row.names = 1)
     colnames(results.Cell2Loc) <- sub("q05cell_abundance_w_sf_", "", colnames(results.Cell2Loc))
@@ -250,7 +250,7 @@ calculate_JSD <- function(sc_num, st_num, results_path) {
   Method_Res <- results_path
   
   # concatenated list of results from all the deconvolution methods
-  if("Cell2Location" %in% methods_) {
+  if("cell2location" %in% methods_) {
     cell2loc_ <- list()
   }
   if("RCTD" %in% methods_) {
@@ -286,7 +286,7 @@ calculate_JSD <- function(sc_num, st_num, results_path) {
       
       counter_ <- 1
       
-      if("Cell2Location" %in% methods_) {
+      if("cell2location" %in% methods_) {
         cell2loc_[[aa]] <- r[[counter_]]
         counter_ <- counter_ + 1
       }
@@ -328,7 +328,7 @@ calculate_JSD <- function(sc_num, st_num, results_path) {
   # calculating JSD for each simulated data
   methodsResult <- list()
   
-  if("Cell2Location" %in% methods_) {
+  if("cell2location" %in% methods_) {
     methodsResult <- c(methodsResult, list(cell2loc_))
   }
   if("RCTD" %in% methods_) {

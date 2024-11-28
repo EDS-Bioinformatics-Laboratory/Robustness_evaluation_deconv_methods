@@ -27,7 +27,7 @@ rm_scenarios <- strsplit(args[2], ",")[[1]]
 
 # all deconvolution methods are considered if command line arg is missing
 if (length(args)<=2) {
-  methods_ <- c("Cell2Location",
+  methods_ <- c("cell2location",
                 "RCTD",
                 "CARD",
                 "SCDC",
@@ -87,7 +87,7 @@ get_celltype_results <- function(z, y, Method_Res, dflist_, num_ct) {
   
   # dflist[ , , ] --> removed celltype, all celltypes, method
   
-  if ("Cell2Location" %in% methods_) {
+  if ("cell2location" %in% methods_) {
     results.Cell2Loc <- 
       utils::read.csv(paste0(Method_Res, "Cell2Location/Cell2Location.", z, "-", y, ".csv"), row.names = 1)
     colnames(results.Cell2Loc) <- sub("q05cell_abundance_w_sf_", "", colnames(results.Cell2Loc))

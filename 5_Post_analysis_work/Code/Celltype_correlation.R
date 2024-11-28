@@ -128,7 +128,7 @@ corr.plots <- lapply(1:2, function(pll) {
                                 "Myocytes" = "Myocytes",
                                 "Neutrophils" = "Neutrophils",
                                 "NK cells" = "NK",
-                                "Skeletal muscle" = "Skeletal Muscle")) +
+                                "Skeletal muscle" = "Skeletal muscle")) +
     scale_y_discrete(labels = c("Adipocytes" = "Adipocytes",
                                 "B-cells" = "B",
                                 "CD4+ T-cells" = "CD4 T",
@@ -141,18 +141,18 @@ corr.plots <- lapply(1:2, function(pll) {
                                 "Myocytes" = "Myocytes",
                                 "Neutrophils" = "Neutrophils",
                                 "NK cells" = "NK",
-                                "Skeletal muscle" = "Skeletal Muscle"))
+                                "Skeletal muscle" = "Skeletal muscle"))
   
 })
 
 
 png(file = paste0(Results, "Fig_Celltype_corr_integrated_assay.png"),
     res = 450, width = 4.2, height = 3.6, units = "in")
-plot_grid(corr.plots[[2]], nrow = 1, labels = c("b"), label_size = 12)
+plot_grid(corr.plots[[2]], nrow = 1, label_size = 12)
 dev.off()
 
 png(file = paste0(Results, "Fig_Celltype_corr_rna_assay.png"),
     res = 450, width = 4.2, height = 3.6, units = "in")
-plot_grid(corr.plots[[1]], nrow = 1, labels = c("b"), label_size = 12)
+plot_grid(corr.plots[[1]], nrow = 1, label_size = 12)
 dev.off()
 

@@ -30,11 +30,23 @@ jsd.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
 rmse.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
                              "RMSE.means.", st_num, "_ST.rds"))
 
+# The methods are ordered based on the baseline JSD result (even for rmse plots)
+jsd.list <- jsd.lists[[1]]
+new_col_order <- names(sort(apply(jsd.list, 2, median)))
 
-jsdPlot1 <- reshape2::melt(jsd.lists[[1]])
-rmsePlot1 <- reshape2::melt(rmse.lists[[1]])
+# reordered JSD and RMSE results
+jsd.lists <- lapply(jsd.lists, function(df) df[, new_col_order])
+rmse.lists <- lapply(rmse.lists, function(df) df[, new_col_order])
+
 
 # baseline scenarios
+jsd.list <- jsd.lists[[1]]
+jsdPlot1 <- reshape2::melt(jsd.list)
+
+rmse.list <- rmse.lists[[1]]
+rmsePlot1 <- reshape2::melt(rmse.list)
+
+
 jsd.base <- ggplot(jsdPlot1, aes(x = variable, y = value)) +
   geom_violin(trim = T) +
   stat_summary(fun = median, geom = "point", shape = 4, color = "red", size = 3) +
@@ -81,7 +93,7 @@ rmse.base <- ggplot(rmsePlot1, aes(x = variable, y = value)) +
 
 png(file = paste0(Results, "Fig_baseline_st_", st_num, ".png"),
     res = 450, width = 9.6, height = 6, units = "in")
-print(plot_grid(jsd.base, rmse.base,  ncol = 1, labels = c("a", ""), rel_heights = c(.7, .8, .15)))
+print(plot_grid(jsd.base, rmse.base,  ncol = 1, rel_heights = c(.7, .8, .15)))
 dev.off()
 
 
@@ -115,7 +127,7 @@ jsd.other <- lapply(1:1, function(m) {
       panel.background = element_rect(fill = "white"),
       panel.grid.major = element_line(colour = "grey95", linewidth = 0.1)
     ) + NoLegend() +
-    ggtitle("Removal scenario")
+    ggtitle("Cell type mismatch scenario")
 })
 
 rmse.list <- rmse.lists
@@ -149,7 +161,7 @@ rmse.other <- lapply(1:1, function(m) {
       panel.background = element_rect(fill = "white"),
       panel.grid.major = element_line(colour = "grey95", linewidth = 0.1)
     ) + NoLegend() +
-    ggtitle("Removal scenario")
+    ggtitle("Cell type mismatch scenario")
 })
 
 jsd.leg <- get_legend(jsd.other[[1]]
@@ -169,5 +181,5 @@ jsd.leg <- get_legend(jsd.other[[1]]
 
 png(file = paste0(Results, "Fig_removal_scenario_st_", st_num, ".png"),
     res = 450, width = 9.6, height = 6, units = "in")
-print(plot_grid(jsd.other[[1]], rmse.other[[1]], jsd.leg, ncol = 1, labels = c("b", ""), rel_heights = c(.7, .8, .15)))
+print(plot_grid(jsd.other[[1]], rmse.other[[1]], jsd.leg, ncol = 1, rel_heights = c(.7, .8, .15)))
 dev.off()

@@ -20,7 +20,7 @@ source("Init_env.R")
 args <- commandArgs(trailingOnly = TRUE)
 st_num <- args[1]
 
-methods_ <- c("Cell2Location",
+methods_ <- c("cell2location",
               "RCTD",
               "CARD",
               "SCDC",
@@ -143,7 +143,7 @@ l1 <- cowplot::plot_grid(ct.assignment.plots[[1]], NULL, ct.assignment.plots[[2]
 l2 <- cowplot::plot_grid(ct.assignment.plots[[5]], NULL, ct.assignment.plots[[6]], NULL,
                          ct.assignment.plots[[7]], NULL, ct.assignment.plots[[8]], NULL,
                          nrow = 1, align = "hv", rel_widths = c(1, -.12, 1, -.12, 1, -.12, 1, -.12))
-prow_ct <- cowplot::plot_grid(l1, NULL, l2, labels = c("a"),
+prow_ct <- cowplot::plot_grid(l1, NULL, l2,
                               align = 'hv', ncol = 1, rel_heights = c(1, 0, 1))
 
 y.grob <- grid::textGrob("Removed cell type (in grey)", 
@@ -252,7 +252,7 @@ l12 <- cowplot::plot_grid(ct.assignment.plots2[[1]], NULL, ct.assignment.plots2[
 l22 <- cowplot::plot_grid(ct.assignment.plots2[[5]], NULL, ct.assignment.plots2[[6]], NULL,
                           ct.assignment.plots2[[7]], NULL, ct.assignment.plots2[[8]], NULL,
                           nrow = 1, align = "hv", rel_widths = c(1, -.12, 1, -.12, 1, -.12, 1, -.1))
-prow_ct2 <- cowplot::plot_grid(l12, NULL, l22, labels = c("a"),
+prow_ct2 <- cowplot::plot_grid(l12, NULL, l22,
                                align = 'hv', ncol = 1, rel_heights = c(1, 0, 1))
 
 y.grob2 <- grid::textGrob("Removed cell types (in grey)",
@@ -360,7 +360,7 @@ l13 <- cowplot::plot_grid(ct.assignment.plots3[[1]], NULL, ct.assignment.plots3[
 l23 <- cowplot::plot_grid(ct.assignment.plots3[[5]], NULL, ct.assignment.plots3[[6]], NULL,
                           ct.assignment.plots3[[7]], NULL, ct.assignment.plots3[[8]], NULL,
                           nrow = 1, align = "hv", rel_widths = c(1, -.12, 1, -.12, 1, -.12, 1, -.1))
-prow_ct3 <- cowplot::plot_grid(l13, NULL, l23, labels = c("a"),
+prow_ct3 <- cowplot::plot_grid(l13, NULL, l23,
                                align = 'hv', ncol = 1, rel_heights = c(1, 0, 1))
 
 y.grob2 <- grid::textGrob("Removed cell types (in grey)",

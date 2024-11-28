@@ -17,7 +17,7 @@ source("Init_env.R")
 args <- commandArgs(trailingOnly = TRUE)
 st_num <- args[1]
 
-methods_ <- c("Cell2Location",
+methods_ <- c("cell2location",
               "RCTD",
               "CARD",
               "SCDC",
@@ -56,11 +56,6 @@ jsd.mat[is.na(jsd.mat)] <- 0
 # take the mean over all scenarios to get a final rank. Later this ranking is
 # normalised higher the rank value, better the methods performed overall
 jsd.rank <- t(as.data.frame(((apply(jsd.mat, 1, rank)))))
-# jsd.rank <- as.data.frame((rowMeans(apply(jsd.mat, 1, rank))))
-# colnames(jsd.rank) <- "ranks.jsd"
-
-# jsd.mat <- rbind(jsd.mat, t(jsd.rank))
-
 
 # we calculate mean RMSE for a removal scenario over all the spots and later
 # substract it from 1, since lower the jsd value higher the rank
@@ -74,18 +69,23 @@ rmse.mat[is.na(rmse.mat)] <- 0
 # take the mean over all scenarios to get a final rank. Later this ranking is
 # normalised higher the rank value, better the methods performed overall
 rmse.rank <- t(as.data.frame(((apply(rmse.mat, 1, rank)))))
-# rmse.rank <- as.data.frame((rowMeans(apply(rmse.mat, 1, rank))))
-# colnames(rmse.rank) <- "ranks.rmse"
 
-# rmse.mat <- rbind(rmse.mat, t(rmse.rank))
 
+
+# combining the jsd and rmse ranking for each scenario into one dataframe
 tmp <- as.data.frame(t(rbind(jsd.rank, rmse.rank)))
 
+# calculating the overall ranking for each method using the JSD/RMSe ranking for 
+# each scenario 
 overall.rank <- as.data.frame((colMeans(jsd.rank) + colMeans(rmse.rank)) / 2)
 colnames(overall.rank) <- "overall.rank"
 
-tmp <- cbind(tmp, overall.rank) %>%
-  rownames_to_column("id")
+# ordered the methods based on the overall ranking 
+overall.rank <- overall.rank[order(-overall.rank$overall.rank), , drop = F]
+tmp <- tmp[rownames(overall.rank), ]
+
+
+final_df <- cbind(tmp, overall.rank) %>% rownames_to_column("id")
 
 
 # column info for ST dataset 1
@@ -114,10 +114,10 @@ column_info <- tidyr::tribble(
 
 
 # column groups for ST dataset
-col_groups <- tibble::tibble(col1 = c("Methods",
+col_groups <- tibble::tibble(col1 = c("Method",
                                       "Overall",
                                       "Accuracy",
-                                      "Robustness during cell type mismatch", "Robustness during cell type mismatch", "Robustness during cell type mismatch", "Robustness during cell type mismatch", "Robustness during cell type mismatch", "Robustness during cell type mismatch"), #"Robustness for ST1",
+                                      "Robustness to cell type mismatch", "Robustness to cell type mismatch", "Robustness to cell type mismatch", "Robustness to cell type mismatch", "Robustness to cell type mismatch", "Robustness to cell type mismatch"), #"Robustness for ST1",
                              Category = c("",
                                           "",
                                           "0 CT",
@@ -133,17 +133,17 @@ col_groups <- tibble::tibble(col1 = c("Methods",
 )
 
 
-row_info <- tidyr::tribble(
-  ~group, ~id,
-  "ST-based", "Cell2Location",
-  "ST-based", "RCTD",
-  "ST-based", "CARD",
-  "ST-based", "Stereoscope",
-  "ST-based", "Seurat",
-  "ST-based", "SPOTlight",
-  "Bulk rna-based", "SCDC",
-  "Bulk rna-based", "MuSiC"
-)
+# row_info <- tidyr::tribble(
+#   ~group, ~id,
+#   "ST-based", "cell2location",
+#   "ST-based", "RCTD",
+#   "ST-based", "CARD",
+#   "ST-based", "Stereoscope",
+#   "ST-based", "Seurat",
+#   "ST-based", "SPOTlight",
+#   "Bulk rna-seq based", "SCDC",
+#   "Bulk rna-seq based", "MuSiC"
+# )
 
 palettes <- list(
   methods = "Greys",
@@ -168,7 +168,7 @@ legends <- list(
     size = c(.25, .375, .5, .6, .7, .8, .9, 1)
   ),
   list(
-    title = "Removal ranking",
+    title = "Mismatch ranking",
     palette = "rm",
     geom = "funkyrect",
     labels = c(" 8", "", "", "", "", "", "", "1"),
@@ -177,16 +177,16 @@ legends <- list(
 )
 
 
-funky <- funkyheatmap::funky_heatmap(as.data.frame(norm_min_max(tmp)),
+funky <- funkyheatmap::funky_heatmap(as.data.frame(norm_min_max(final_df)),
                                      column_info = column_info,
                                      column_groups = col_groups,
-                                     row_info = row_info,
+                                     # row_info = row_info,
                                      palettes = palettes,
                                      legends = legends,
                                      scale_column = F,
                                      position_args = funkyheatmap::position_arguments(
                                        row_height = 1.2,
-                                       row_space = 0.3,
+                                       row_space = 0.5,
                                        row_bigspace = 1.5,
                                        col_width = 1.2,
                                        col_space = 0.1,

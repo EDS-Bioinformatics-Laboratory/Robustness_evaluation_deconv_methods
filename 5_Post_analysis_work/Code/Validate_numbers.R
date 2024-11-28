@@ -5,7 +5,10 @@
 # analysis and reproduction efforts for the integrated single-cell reference data
 #
 # Part 2
-# Create heatmap plots for JSD/RMSE values for all scenarios in each ST dataset
+# Create heatmap plots for mean JSD/RMSE values for all scenarios in each ST dataset
+# 
+# Part 3
+# Create heatmap plots for median JSD/RMSE values for all scenarios in each ST dataset
 # 
 # Implemented by Utkarsh Mahamune
 # Bioinformatics Laboratory | Amsterdam UMC (Location AMC)
@@ -51,7 +54,7 @@ dev.off()
 
 
 
-#### Part 1 ####
+#### Part 2 ####
 
 for (st_num in 1:3) {
   
@@ -116,6 +119,89 @@ for (st_num in 1:3) {
     ) +
     NoLegend() +
     ggtitle("Mean RMSE values across removal scenarios")
+  
+  print(g1+g2)
+  
+  dev.off()
+}
+
+
+#### Part 3 ####
+
+for (st_num in 1:3) {
+  
+  jsd.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
+                              "JSD.means.", st_num, "_ST.rds"))
+  rmse.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
+                               "RMSE.means.", st_num, "_ST.rds"))
+  
+
+  df <- do.call(rbind, lapply(jsd.lists, function(mat) {
+    # Calculate column medians using apply
+    medians <- apply(mat, 2, median, na.rm = TRUE)
+    # Convert to a dataframe and transpose
+    as.data.frame(t(medians))
+  }))
+  
+  df_long <- df %>%
+    mutate(Row = row_number()) %>%
+    pivot_longer(-Row, names_to = "Column", values_to = "Value")
+  
+  df <- do.call(rbind, lapply(rmse.lists, function(mat) {
+    # Calculate column medians using apply
+    medians <- apply(mat, 2, median, na.rm = TRUE)
+    # Convert to a dataframe and transpose
+    as.data.frame(t(medians))
+  }))
+  df_long2 <- df2 %>%
+    mutate(Row = row_number()) %>%
+    pivot_longer(-Row, names_to = "Column", values_to = "Value")
+  
+  
+  png(paste0(Results, "Median_JSD_RMSE_values_", st_num, "st.png"), height = 5.5,
+      width = 13.5, units = "in", res = 450)
+  
+  g1 <- ggplot(df_long, aes(y = Column, x = factor(Row), fill = Value)) +
+    geom_tile(aes(fill = Value), color = "white", lwd = 1.5) +
+    geom_text(aes(label = round(Value, 4)), color = "black", size = 5) +
+    scale_fill_gradient2(high = "dodgerblue4", na.value = "grey40") +
+    scale_x_discrete(labels = c("0", "1", "2", "3", "5", "10", "11")) +
+    xlab("# celltypes removed from reference data") +
+    ylab("Deconvolution methods") +
+    theme_classic() +
+    theme(
+      plot.title = element_text(size = 14, color = "brown4", hjust = 0, face="bold"),
+      panel.background = element_rect(fill = "white"),
+      axis.text.x = element_text(size = 11),
+      axis.text.y = element_text(size = 11),
+      axis.title.x = element_text(size = 12, face="bold"),
+      axis.title.y = element_text(size = 12, face="bold"),
+      panel.grid.minor = element_blank(),
+      panel.grid.major = element_line(colour = "grey70", linewidth = 0.1)
+    ) +
+    NoLegend() +
+    ggtitle("Median JSD values across removal scenarios")
+  
+  g2 <- ggplot(df_long2, aes(y = Column, x = factor(Row), fill = Value)) +
+    geom_tile(aes(fill = Value), color = "white", lwd = 1.5) +
+    geom_text(aes(label = round(Value, 4)), color = "black", size = 5) +
+    scale_fill_gradient2(high = "dodgerblue4", na.value = "grey40") +
+    scale_x_discrete(labels = c("0", "1", "2", "3", "5", "10", "11")) +
+    xlab("# celltypes removed from reference data") +
+    ylab("Deconvolution methods") +
+    theme_classic() +
+    theme(
+      plot.title = element_text(size = 14, color = "brown4", hjust = 0, face="bold"),
+      panel.background = element_rect(fill = "white"),
+      axis.text.x = element_text(size = 11),
+      axis.text.y = element_text(size = 11),
+      axis.title.x = element_text(size = 12, face="bold"),
+      axis.title.y = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.grid.major = element_line(colour = "grey70", linewidth = 0.1)
+    ) +
+    NoLegend() +
+    ggtitle("Median RMSE values across removal scenarios")
   
   print(g1+g2)
   

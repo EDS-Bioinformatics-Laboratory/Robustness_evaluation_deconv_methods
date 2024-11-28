@@ -232,7 +232,7 @@ You only need to run shell/batch scripts for the results; details about the stan
 	&emsp;&emsp;&emsp;&emsp;c. [*optional; default is all methods* ] name of the deconvolution methods separated by comma <br>
 		
 		e.g., command line input for calculating cell type reassignment for method CARD and RCTD with 1st simulated ST data and removal of one, two & three cell type scenarios would be then as follows,
-		Rscript Get_celltype_assignment_results.R "CARD","RCTD" 1 "rm1","rm2","rm3"    
+		Rscript Get_celltype_assignment_results.R 1 "rm1","rm2","rm3" "CARD","RCTD"
 
 <br>
 
@@ -264,7 +264,7 @@ You only need to run shell/batch scripts for the results; details about the stan
 	> &emsp;&emsp;&emsp;&emsp;<font color="red">Note:</font> <font color="blue">`Funky_plots.R`</font> expects command line arguments as below;<br>
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;a. index of the simulated ST dataset [*options: 1, 2, 3* ] <br>
 	
-	- For validating the reproduction results and cross-checking the numbers with the original analysis below R script will generate plots which can be compared with the plots in the original analysis.
+	- For validating the reproduction results and cross-checking the numbers with the original analysis below R script will generate plots that can be compared with those in the original analysis.
 
 	   
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue">`Rscript Init_env.R`</font> <br> 
