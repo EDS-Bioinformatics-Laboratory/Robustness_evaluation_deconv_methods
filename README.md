@@ -92,6 +92,7 @@ This directory enlists the software environment specifications used for various 
 	
 <br>
 <br>
+
 **<font color="red" size=4>Disclaimer:</font>** 
 <font color="red">The following instructions are for reproducing the results using the command-line terminal/prompt, not RStudio or Jupyter Notebook. </font>
 <br>
@@ -452,3 +453,24 @@ Execution halted
 This is a known issue when RCTD runs multiple jobs in parallel from within the deconvolution function. This has been reported to the developers earlier and can be found in the issues on the GitHub repository ([link](https://github.com/dmcable/spacexr/issues/141)).
 
 Please follow the solution available in the reported issue; if the problem persists, please raise an issue on GitHub.
+
+<br>
+
+#### 5. Creating conda virtual environment with environment.yml
+
+
+The `environment.yml` is generated on the linux system and thus you can get error like below.
+
+```
+PackagesNotFoundError: The following packages are not available from current channels:
+
+  - libstdcxx-ng=11.2.0*
+  - libgomp=11.2.0*
+  - libgcc-ng=11.2.0*
+  - ld_impl_linux-64=2.40*
+  - _openmp_mutex=5.1*
+  - _libgcc_mutex=0.1*
+```
+
+
+Please comment out the lines in the `environment.yml` file with the package names that gave the error and rerun the command.
