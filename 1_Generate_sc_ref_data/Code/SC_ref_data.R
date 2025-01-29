@@ -443,8 +443,8 @@ new.cluster.ids <- c("Adipocytes",
                      "Neutrophils",
                      "NK_cells",
                      "Skeletal_muscle")
-sc.data.pro.int@meta.data$blue.main <-
-  plyr::mapvalues(x = sc.data.pro.int@meta.data$blue.main,
+sc.data.pro@meta.data$blue.main <-
+  plyr::mapvalues(x = sc.data.pro@meta.data$blue.main,
                   from = current.cluster.ids,
                   to = new.cluster.ids)
 
@@ -456,7 +456,7 @@ color_pal <- c("#1B9E77", "#7570B3", "#E7298A", "#66A61E", "#666666", "#B2DF8A",
 
 png(paste0(Results, "suppl_fig_1d.png"),
     res = 450, width = 8.4, height = 6, units = "in")
-p3 <- DimPlot(sc.data.pro.int,
+p3 <- DimPlot(sc.data.pro,
               reduction = "umap",
               cols = color_pal,
               label = T,
