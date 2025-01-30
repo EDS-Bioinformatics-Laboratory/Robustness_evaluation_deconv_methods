@@ -447,6 +447,10 @@ sc.data.pro@meta.data$blue.main <-
   plyr::mapvalues(x = sc.data.pro@meta.data$blue.main,
                   from = current.cluster.ids,
                   to = new.cluster.ids)
+sc.data.pro.int@meta.data$blue.main <-
+  plyr::mapvalues(x = sc.data.pro.int@meta.data$blue.main,
+                  from = current.cluster.ids,
+                  to = new.cluster.ids)
 
 
 # to get the exact same colors for cell types as that of full dataset
@@ -456,7 +460,7 @@ color_pal <- c("#1B9E77", "#7570B3", "#E7298A", "#66A61E", "#666666", "#B2DF8A",
 
 png(paste0(Results, "suppl_fig_1d.png"),
     res = 450, width = 8.4, height = 6, units = "in")
-p3 <- DimPlot(sc.data.pro,
+p3 <- DimPlot(sc.data.pro.int,
               reduction = "umap",
               cols = color_pal,
               label = T,
@@ -471,4 +475,5 @@ dev.off()
 rm(color_pal)
 
 
+# downsampled dataset with RNA assay, referred to as reference dataset here onwards
 saveRDS(sc.data.pro, file = paste0(Results, "sc.ref.data.rds"))
