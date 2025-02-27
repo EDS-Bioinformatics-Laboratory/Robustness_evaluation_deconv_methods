@@ -33,7 +33,7 @@ rm(list = ls())
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) < 1 | length(args) > 1) {
-  stop("Please provide specified number of command-line argument.", call. = FALSE)
+  stop("Please provide GITHUB PAT token as command-line argument.", call. = FALSE)
 }
 
 

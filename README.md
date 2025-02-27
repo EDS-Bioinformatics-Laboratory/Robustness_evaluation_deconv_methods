@@ -69,25 +69,19 @@ This directory enlists the software environment specifications used for various 
 	
 	&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`conda env create -f environment.yml`</font> 
 
-	> **<font color="red">Note:</font>** Depending on your platform(OS), installation of a few Python packages/libraries might fail; please check the logs/status of the environment creation carefully.
-<br>
-
-	<br>
+	> **<font color="red">Note:</font>** Depending on your platform(OS), installation of a few Python packages/libraries might fail; please check the logs/status of the environment creation carefully.<br> <br>
 
 	<font color="darkblue" size=4>§ Steps to set up renv functionalities for your analysis </font> <br>
 	
 	**I**. 	<font color="brown">[optional]</font> Read [<font color="blue">getting started with renv</font>](https://rstudio.github.io/renv/articles/renv.html) carefully to understand the functionalities provided by the renv R package.
-	
-	**II**. <font color="brown">[Only if using RStudio to reproduce the results]</font> Create an R project in RStudio: `RStudio > File > New Project > Existing Directory > Select the /Processing` directory in the sFSS or the root directory if downloaded from github repository. For more details on how RStudio projects work, refer to [<font color="blue">RStudio projects</font>](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects).
-	
-	**III**. Executing `Renv_Setup.R` under the `/Processing` directory to initialise the renv infrastructure for the R project (ignore the warning messages):
-	- The `Renv_Setup.R` script expects a **GITHUB_PAT token (classic)** as command line argument (arg1). More details on the github token can be found [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
-	- If using RStudio: execute the script line-by-line, read the comments within the scripts.
-	- If using bash/shell terminal: <br>
+		
+	**II**. Executing `Renv_Setup.R` from where it resides currently to initialise the renv infrastructure for the R project (ignore the warning messages):
+	- The `Renv_Setup.R` script expects a **GITHUB_PAT token (classic)** as command line argument (arg1). More details on the github token can be found [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).<br>
+
 		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`Rscript Renv_setup.R arg1` </font> 
 		
 	&emsp;&emsp;&emsp;&emsp;
-*The required files <font color="brown">(renv.lock, .Rprofile, renv/activate.R, renv/setting.json)</font> should already be in your R project directory; If not, ensure it resides in the same directory as the Renv_setup.R file.*
+*The required files for renv setup <font color="brown">(renv.lock, .Rprofile, renv/activate.R, renv/setting.json)</font> should already be in your R project directory; If not, ensure it resides in the same directory as the Renv_setup.R file.*
 	
 	> **<font color="red">Note:</font>** A collaborator can still experience minor discrepancies in the results while using the renv functionality due to the platform(OS) dependencies.
 	
@@ -392,7 +386,7 @@ to resolve this error, you can follow either option from below,
 
 <br>
 
-####2. Compilation failed error on Windows OS
+#### 2. Compilation failed error on Windows OS
 
 R and RStudio on Windows OS require rtools (a toolchain for building R and R packages). The correct version of rtools can be downloaded from [here](https://cran.r-project.org/bin/windows/Rtools/).
 
