@@ -17,6 +17,9 @@
 #### Initialize environment ####
 source("Init_env.R")
 
+args <- commandArgs(trailingOnly = TRUE)
+st_num <- args[1]
+
 #### Part 1 ####
 sc.ref.int.data <- readRDS(paste0("../../1_Generate_sc_ref_data/Results/sc.combined.nor.rds"))
 
@@ -56,12 +59,12 @@ dev.off()
 
 #### Part 2 ####
 
-for (st_num in 1:3) {
+for (s in st_num:st_num) {
   
   jsd.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
-                              "JSD.means.", st_num, "_ST.rds"))
+                              "JSD.means.", s, "_ST.rds"))
   rmse.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
-                               "RMSE.means.", st_num, "_ST.rds"))
+                               "RMSE.means.", s, "_ST.rds"))
   
   
   df <- do.call(rbind, lapply(lapply(jsd.lists, colMeans), function(x) as.data.frame(t(x))))
@@ -75,7 +78,7 @@ for (st_num in 1:3) {
     pivot_longer(-Row, names_to = "Column", values_to = "Value")
   
   
-  png(paste0(Results, "Mean_JSD_RMSE_values_", st_num, "st.png"), height = 5.5,
+  png(paste0(Results, "Mean_JSD_RMSE_values_", s, "st.png"), height = 5.5,
       width = 13.5, units = "in", res = 450)
   
   g1 <- ggplot(df_long, aes(y = Column, x = factor(Row), fill = Value)) +
@@ -128,12 +131,12 @@ for (st_num in 1:3) {
 
 #### Part 3 ####
 
-for (st_num in 1:3) {
+for (s in st_num:st_num) {
   
   jsd.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
-                              "JSD.means.", st_num, "_ST.rds"))
+                              "JSD.means.", s, "_ST.rds"))
   rmse.lists <- readRDS(paste0("../../4_Analysis_results/Results/",
-                               "RMSE.means.", st_num, "_ST.rds"))
+                               "RMSE.means.", s, "_ST.rds"))
   
 
   df <- do.call(rbind, lapply(jsd.lists, function(mat) {
@@ -147,7 +150,7 @@ for (st_num in 1:3) {
     mutate(Row = row_number()) %>%
     pivot_longer(-Row, names_to = "Column", values_to = "Value")
   
-  df <- do.call(rbind, lapply(rmse.lists, function(mat) {
+  df2 <- do.call(rbind, lapply(rmse.lists, function(mat) {
     # Calculate column medians using apply
     medians <- apply(mat, 2, median, na.rm = TRUE)
     # Convert to a dataframe and transpose
@@ -158,7 +161,7 @@ for (st_num in 1:3) {
     pivot_longer(-Row, names_to = "Column", values_to = "Value")
   
   
-  png(paste0(Results, "Median_JSD_RMSE_values_", st_num, "st.png"), height = 5.5,
+  png(paste0(Results, "Median_JSD_RMSE_values_", s, "st.png"), height = 5.5,
       width = 13.5, units = "in", res = 450)
   
   g1 <- ggplot(df_long, aes(y = Column, x = factor(Row), fill = Value)) +

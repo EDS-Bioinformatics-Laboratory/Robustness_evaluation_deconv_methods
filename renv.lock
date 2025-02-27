@@ -610,6 +610,28 @@
       ],
       "Hash": "40a55bd0b44719941d103291ac5e9d74"
     },
+    "TOAST": {
+      "Package": "TOAST",
+      "Version": "1.8.3",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "EpiDISH",
+        "GGally",
+        "R",
+        "SummarizedExperiment",
+        "corpcor",
+        "doParallel",
+        "ggplot2",
+        "limma",
+        "methods",
+        "nnls",
+        "parallel",
+        "quadprog",
+        "stats",
+        "tidyr"
+      ],
+      "Hash": "0e9aa4b4e5ebb7e44535f29c8a70ae6d"
+    },
     "MuSiC": {
       "Package": "MuSiC",
       "Version": "1.0.0",
@@ -1131,28 +1153,6 @@
         "utils"
       ],
       "Hash": "619feb3635b27a198477316a033b1ea8"
-    },
-    "TOAST": {
-      "Package": "TOAST",
-      "Version": "1.8.3",
-      "Source": "Bioconductor",
-      "Requirements": [
-        "EpiDISH",
-        "GGally",
-        "R",
-        "SummarizedExperiment",
-        "corpcor",
-        "doParallel",
-        "ggplot2",
-        "limma",
-        "methods",
-        "nnls",
-        "parallel",
-        "quadprog",
-        "stats",
-        "tidyr"
-      ],
-      "Hash": "0e9aa4b4e5ebb7e44535f29c8a70ae6d"
     },
     "V8": {
       "Package": "V8",

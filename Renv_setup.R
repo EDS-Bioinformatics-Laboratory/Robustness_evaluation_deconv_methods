@@ -30,6 +30,13 @@
 # Clearing the R session
 rm(list = ls())
 
+
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) < 1 | length(args) > 1) {
+  stop("Please provide specified number of command-line argument.", call. = FALSE)
+}
+
+
 ## R version check
 r_ver <- paste0(unlist(unname(R.version$major)),
                 ".",
@@ -49,7 +56,7 @@ if(r_ver != "4.1.2") {
 # original analysis
 # This should install all the required packages and their dependencies from the 
 # sources mentioned in the renv.lock file
-Sys.setenv("GITHUB_PAT"= "add_your_own_token")
+Sys.setenv("GITHUB_PAT"= args)
 message("Restoring R environment")
 # run to restore packages to version recorded in lock file provided by
 # the developer. This command takes significant amount of time to execute

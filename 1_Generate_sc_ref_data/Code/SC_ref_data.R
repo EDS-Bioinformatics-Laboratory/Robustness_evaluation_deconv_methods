@@ -158,6 +158,8 @@ sc.tab3 <- subset(sc.tab.ln, idents = "TSP14")
 # subsetting the tabula sapiens lymph node dataset based on 10X's profiling
 cell_names <- colnames(sc.tab3)
 
+rm(sc.tab.ln)
+
 prime5 <- list() # cells with 10X's 5-prime profiling
 prime3 <- list() # cells with 10X's 3-prime profiling
 
@@ -173,6 +175,7 @@ for (value in cell_names) {
 sc.5prime <- sc.tab3[,colnames(sc.tab3) %in% unlist(prime5)]
 sc.3prime <- sc.tab3[,colnames(sc.tab3) %in% unlist(prime3)]
 
+rm(prime3,prime5)
 
 #### Filtering tabula sapiens data ####
 # cell-level filtering
@@ -233,6 +236,8 @@ sc.tab.ln.nor4 <- process_data(sc.tab.ln.fil4)
 # annotate tabula sapiens data with SingleR annotation package
 sc.tab.ln.nor4 <- annotate_clusters(sc.tab.ln.nor4)
 
+rm(sc.3prime,sc.5prime,sc.tab.ln.fil1,sc.tab.ln.fil2,sc.tab.ln.fil3,sc.tab.ln.fil4)
+
 
 #### In-house LNSC dataset ####
 plus <- Read10X(data.dir = paste0(Data, "in_house_lnsc/plusDataset"))
@@ -274,6 +279,8 @@ sc.in.house.nor <- process_data(sc.in.house.fil)
 # annotate in-house LNSC using SingleR package
 sc.in.house.nor <- annotate_clusters(sc.in.house.nor)
 
+rm(sc.in.house,sc.in.house.fil)
+
 # UMAP representation of the in-house lymph node full dataset without NA
 tmp <- sc.in.house.nor[, !is.na(sc.in.house.nor@meta.data[, "blue.main"])]
 
@@ -299,17 +306,20 @@ rm(tmp)
 sc.datas <- list(sc.in.house.nor, sc.tab.ln.nor1, sc.tab.ln.nor2,
                  sc.tab.ln.nor3, sc.tab.ln.nor4)
 
+rm(sc.in.house.nor,sc.tab.ln.nor1,sc.tab.ln.nor2,sc.tab.ln.nor3,sc.tab.ln.nor4)
+
+
 # Select the most variable features to use for integration
 features <- SelectIntegrationFeatures(object.list = sc.datas, nfeatures = 3000)
 
 # Find best buddies - can take a while to run
 sc.anchors <- FindIntegrationAnchors(object.list = sc.datas,
                                      anchor.features = features)
-
+rm(sc.datas)
 
 # Integrate across conditions
 sc.combined <- IntegrateData(anchorset = sc.anchors)
-
+rm(sc.anchors)
 
 sc.combined <- ScaleData(sc.combined, verbose = F) %>%
   RunPCA(verbose = F) %>%
@@ -360,12 +370,16 @@ sc.data <- FindVariableFeatures(sc.data,
 # removing cells with NA annotations
 sc.data.subset <- sc.data[, !is.na(sc.data@meta.data[, "blue.main"])]
 
+rm(sc.data)
 
 # For generating the UMAP representation of the integrated dataset we use
 # integrated assay, but for the downstream analysis we use the RNA assay
 sc.data.int <-
   CreateSeuratObject(counts = sc.combined@assays$integrated@data,
                      meta.data = sc.combined@meta.data)
+
+rm(sc.combined)
+
 sc.data.int <- FindVariableFeatures(sc.data.int,
                                 selection.method = "vst",
                                 nfeatures = 3000,
@@ -376,6 +390,8 @@ sc.data.int <- FindVariableFeatures(sc.data.int,
 
 # removing cells with NA annotations
 sc.data.subset.int <- sc.data.int[, !is.na(sc.data.int@meta.data[, "blue.main"])]
+
+rm(sc.data.int)
 
 png(paste0(Results, "suppl_fig_1c.png"),
     res = 450, width = 8.4, height = 6, units = "in")
@@ -404,8 +420,12 @@ idents.use <- data.frame(sort(table(sc.data.subset$blue.main))) %>%
 Idents(sc.data.subset) <- "blue.main"
 sc.data.pro <- subset(sc.data.subset, idents = idents.use$Var1)
 
+rm(sc.data.subset)
+
 Idents(sc.data.subset.int) <- "blue.main"
 sc.data.pro.int <- subset(sc.data.subset.int, idents = idents.use$Var1)
+
+rm(sc.data.subset.int)
 
 # downsampling cells per cell type (cluster)
 # WhichCells uses sample() function internally to select random cells
