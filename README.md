@@ -69,7 +69,7 @@ This directory enlists the software environment specifications used for various 
 	
 	&emsp;&emsp;&emsp;&emsp;<font color="blue" size=4>`conda env create -f environment.yml`</font> 
 
-	> **<font color="red">Note:</font>** Depending on your platform(OS), installation of a few Python packages/libraries might fail; please check the logs/status of the environment creation carefully.<br> <br>
+	> **<font color="red">Note:</font>** Depending on your platform(OS), installation of a few Python packages/libraries might fail; please check the logs/status of the environment creation carefully.<br>
 
 	<font color="darkblue" size=4>§ Steps to set up renv functionalities for your analysis </font> <br>
 	
