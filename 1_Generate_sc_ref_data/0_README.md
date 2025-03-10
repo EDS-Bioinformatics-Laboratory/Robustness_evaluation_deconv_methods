@@ -14,7 +14,7 @@ MacOS Ventura 13.4.1
 
 
 
-####**Conceptual description of methodology**
+#### **Conceptual description of methodology**
 
 
 * In the project, we used two independent scRNA-seq datasets (Tabula sapiens lymph node dataset and lymph node stromal cells dataset GEO accession ID: #######) to create a comprehensive scRNA-seq reference dataset using an integration strategy.

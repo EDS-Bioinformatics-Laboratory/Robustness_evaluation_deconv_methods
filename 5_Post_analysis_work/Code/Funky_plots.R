@@ -203,6 +203,6 @@ funky
 
 
 png(file = paste0(Results, "Fig_funky_rank_", st_num, "st.png"), 
-    res = 450, width = funky$width + 1, height = funky$height, units = "in")
+    res = 450, width = 10.8, height = 7.2, units = "in")
 print(funky)
 dev.off()

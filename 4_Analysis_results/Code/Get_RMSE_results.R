@@ -324,7 +324,7 @@ calculate_RMSE <- function(sc_num, st_num, results_path) {
   }
   
   
-  # calculating JSD for each simulated data
+  # calculating RMSE for each simulated data
   methodsResult <- list()
   
   if("cell2location" %in% methods_) {
@@ -354,7 +354,7 @@ calculate_RMSE <- function(sc_num, st_num, results_path) {
   
   
   
-  # calculating JSD between a spot composition in ground truth and prediction made
+  # calculating RMSE between a spot composition in ground truth and prediction made
   # by a method
   rmseMat <- matrix(nrow = nrow(gt_[[1]]), ncol = length(methods_)) %>% data.frame()
   colnames(rmseMat) <- methods_
@@ -385,7 +385,7 @@ calculate_RMSE <- function(sc_num, st_num, results_path) {
 }
 
 
-# list of JSD vectors calculated using all the reference dataset for a 
+# list of RMSE vectors calculated using all the reference dataset for a 
 # particular scenario
 r.list <- list()
 counter_ <- 1
@@ -396,7 +396,7 @@ Method_Res <- paste0(decon_results, "rm0/")
 
 rmseList <- calculate_RMSE(1, st_num, Method_Res)
 
-# mean JSD value for a method across all the spots
+# mean RMSE value for a method across all the spots
 r.list[[counter_]] <- rmseList[[1]]
 counter_ <- counter_ + 1
 

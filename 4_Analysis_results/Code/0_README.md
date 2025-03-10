@@ -27,3 +27,6 @@ Manual testing, each script can be run independently. More instructions can be f
 
 
 > <font color="red">Note:</font> More details for every script are available in the header of the script.
+
+
+**logs:** This consists of log (text) files from the execution for reference.

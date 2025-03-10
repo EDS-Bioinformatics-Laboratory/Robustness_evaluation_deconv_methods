@@ -13,7 +13,7 @@ rm(list = ls())
 
 # adding renv library paths to .libPaths()
 renv_lib_paths <- readLines("../../renv_library_paths.txt")
-.libPaths(c(.libPaths(), renv_lib_paths))
+.libPaths(c(renv_lib_paths, .libPaths()))
 
 # if (rstudioapi::isAvailable()) {
 #   message("running in RStudio") 

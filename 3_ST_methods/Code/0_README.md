@@ -42,5 +42,7 @@ Manual testing, each script can be run independently. More instructions can be f
 
 **Stereoscope.R:** Standalone python script for execution of Stereoscope, a deconvolution method tailored for spatial transcriptomics data. Requires command line arguments.
 
+**logs:** This consists of log (text) files from the execution for reference.
+
 
 > *<font color="red">Note</font>: A detail explanation about how to execute these scripts is provided in the 0_README.md file available in the root (/Processing) directory*<br>

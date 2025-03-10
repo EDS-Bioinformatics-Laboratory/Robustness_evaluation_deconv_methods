@@ -22,7 +22,7 @@ One may use the PyCharm Python IDE from JetBrains (https://www.jetbrains.com/pyc
 
 Every Python project should have a `requirements.txt` file. It stores the information of all libraries needed for a project to run, and is essential when deploying Python projects. This is traditionally done via the `pip freeze` command, which outputs all libraries installed in a virtual environment.
 
-But what if you want only the ones used in the project? That’s where pipreqs comes into play. It does the same thing as `pip freeze`, but better.
+If you only want to store the libraries that are actually used in a project then use pipreqs. It does the same thing as `pip freeze`, but better. 
 
 See 
 

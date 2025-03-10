@@ -295,7 +295,7 @@ ct.assignment.plots3 <- lapply(1:dim(dflist)[3], function(m) {
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
         panel.grid.minor = element_blank(),
-        panel.grid.major = element_line(colour = "grey70", size = 0.1)
+        panel.grid.major = element_line(colour = "grey70", linewidth = 0.1)
       ) +
       ggtitle(methods_[m]) +
       scale_x_discrete(labels = c("Adipocytes" = "Adipo",

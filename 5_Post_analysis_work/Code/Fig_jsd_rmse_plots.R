@@ -152,6 +152,10 @@ rmse.other <- lapply(1:1, function(m) {
     # ylim (-.3, .35) +
     theme_classic() +
     theme(
+      legend.position = "bottom",
+      legend.title = element_text(size = 10, color = "black"),
+      legend.text = element_text(size = 8),
+      legend.key.size = unit(0.5, "cm"),
       panel.grid.minor = element_blank(),
       plot.title = element_text(size = 12, color = "#05445E", hjust = 0),
       axis.text.x = element_text(size = 12, color = "dodgerblue4", vjust = 1),
@@ -160,26 +164,94 @@ rmse.other <- lapply(1:1, function(m) {
       axis.title.y = element_text(size = 14, angle = 90, vjust = 0.5, color = "dodgerblue4"),
       panel.background = element_rect(fill = "white"),
       panel.grid.major = element_line(colour = "grey95", linewidth = 0.1)
-    ) + NoLegend() +
+    ) + 
+    guides(fill = guide_legend(nrow = 1)) +
+    scale_fill_discrete(name = "# missing cell types     ",
+                        labels = c("1", "2", "3", "5", "10", "11")) + 
     ggtitle("Cell type mismatch scenario")
 })
 
-jsd.leg <- get_legend(jsd.other[[1]]
-                      + theme(legend.position = "bottom",
-                              legend.title = element_text(size = 12, color = "black"),
-                              legend.text = element_text(size = 11),
-                              legend.key.size = unit(.6, "cm"))
-                      + guides(fill = guide_legend(nrow = 1))
-                      + scale_fill_discrete(name = "# missing celltypes ",
-                                            labels = c(
-                                              "1",
-                                              "2",
-                                              "3",
-                                              "5",
-                                              "10",
-                                              "11")))
 
 png(file = paste0(Results, "Fig_removal_scenario_st_", st_num, ".png"),
     res = 450, width = 9.6, height = 6, units = "in")
-print(plot_grid(jsd.other[[1]], rmse.other[[1]], jsd.leg, ncol = 1, rel_heights = c(.7, .8, .15)))
+print(plot_grid(jsd.other[[1]], rmse.other[[1]], ncol = 1, rel_heights = c(.7, .9)))
+dev.off()
+
+
+
+# Calculate median values for the delta JSD per combination of 
+# mismatch scenario and deconvolution method
+jsd.other <- lapply(1:1, function(m) {
+  mat.plot <- list()
+  # first row for baseline
+  for (mp in 1:(length(jsd.lists)-1)) { 
+    mat.plot[[mp]] <- jsd.list[[mp+1]] - jsd.list[[1]]
+    mat.plot[[mp]] <- mat.plot[[mp]] %>% data.frame() %>% dplyr::mutate(scene = rep(mp, ))
+  }
+  
+  mean.JSD.plot <- reshape2::melt(do.call(rbind, mat.plot), id = "scene")
+  
+  mean.JSD.plot[is.na(mean.JSD.plot)] <- -0.5
+  mean.JSD.plot
+})
+delta.jsd.median <- aggregate(value ~ scene + variable, data = jsd.other[[1]], median)
+# Put missing values back
+delta.jsd.median %>% 
+  mutate(value=ifelse(variable == "Seurat" & scene %in% c(5,6), NA, value)) %>%
+  mutate(value=ifelse(variable == "CARD" & scene ==6, NA, value)) ->
+  delta.jsd.median
+
+# Plot the delta JSD median values and add a regression line
+  gg1 <- ggplot(delta.jsd.median, aes(scene, value, colour=variable)) +
+    geom_point()  + 
+  geom_smooth(aes(scene, value, colour=variable), method=lm, se=FALSE) +
+  facet_wrap(~ variable, nrow = 1, scales="free_x") +
+  labs(x = "", y = expression(Delta*"JSD (median)")) + 
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6),  # Customize breaks
+    labels = c("1", "2", "3", "5", "10", "11")  # Custom labels
+  ) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 8, vjust = 1)) +
+  NoLegend()
+
+# Calculate median values for the delta RMSE per combination of 
+# mismatch scenario and deconvolution method
+rmse.other <- lapply(1:1, function(m) {
+  mat.plot <- list()
+  for (mp in 1:(length(rmse.list)-1)) { 
+    mat.plot[[mp]] <- rmse.list[[mp+1]] - rmse.list[[1]]
+    mat.plot[[mp]] <- mat.plot[[mp]] %>% data.frame() %>% dplyr::mutate(scene = rep(mp, ))
+  }
+  
+  mean.RMSE.plot <- reshape2::melt(do.call(rbind, mat.plot), id = "scene")
+  
+  mean.RMSE.plot[is.na(mean.RMSE.plot)] <- -0.25
+  mean.RMSE.plot
+})
+delta.rmse.median <- aggregate(value ~ scene + variable, data = rmse.other[[1]], median)
+# Put missing values back
+delta.rmse.median %>% 
+  mutate(value=ifelse(variable == "Seurat" & scene %in% c(5,6), NA, value)) %>%
+  mutate(value=ifelse(variable == "CARD" & scene ==6, NA, value)) ->
+  delta.rmse.median
+
+# Plot the delta RMSE median values and add a regression line
+gg2 <- ggplot(delta.rmse.median, aes(scene, value, colour=variable)) +
+  geom_point()  + 
+  geom_smooth(aes(scene, value, colour=variable), method=lm, se=FALSE) +
+  facet_wrap(~ variable, nrow = 1, scales="free_x") +
+  labs(x = "# missing cell types", y = expression(Delta*"RMSE (median)")) + 
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6),  # Customize breaks
+    labels = c("1", "2", "3", "5", "10", "11")  # Custom labels
+  ) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 8, vjust = 1),
+        axis.title.x = element_text(size = 10, vjust = 1)) +
+  NoLegend()
+
+png(file = paste0(Results, "delta_median_st_", st_num, ".png"),
+    res = 450, width = 9.6, height = 6, units = "in")
+print(gg1+gg2+patchwork::plot_layout(nrow=2))
 dev.off()

@@ -29,3 +29,6 @@ Manual testing, each script can be run independently. More instructions can be f
 **Funky_plots.R:** The script generates summary funky plot for an overview of ranking of deconvolution methods across all the removal scenarios.
 
 **Validate_numbers.R:** The script generates barplot for number of cells per celltype in the integrated single-cell reference dataset. It also generates heatmap plots for JSD/RMSE values for all scenarios in each ST dataset. These results can be cross-verified with the results produced in the original analysis.
+
+
+**logs:** This consists of log (text) files from the execution for reference.

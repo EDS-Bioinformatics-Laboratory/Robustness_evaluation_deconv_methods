@@ -83,10 +83,10 @@ for (s in st_num:st_num) {
   
   g1 <- ggplot(df_long, aes(y = Column, x = factor(Row), fill = Value)) +
     geom_tile(aes(fill = Value), color = "white", lwd = 1.5) +
-    geom_text(aes(label = round(Value, 4)), color = "black", size = 5) +
+    geom_text(aes(label = round(Value, 4)), color = "black", size = 4) +
     scale_fill_gradient2(high = "dodgerblue4", na.value = "grey40") +
     scale_x_discrete(labels = c("0", "1", "2", "3", "5", "10", "11")) +
-    xlab("# celltypes removed from reference data") +
+    xlab("# cell types removed from reference data") +
     ylab("Deconvolution methods") +
     theme_classic() +
     theme(
@@ -104,10 +104,10 @@ for (s in st_num:st_num) {
   
   g2 <- ggplot(df_long2, aes(y = Column, x = factor(Row), fill = Value)) +
     geom_tile(aes(fill = Value), color = "white", lwd = 1.5) +
-    geom_text(aes(label = round(Value, 4)), color = "black", size = 5) +
+    geom_text(aes(label = round(Value, 4)), color = "black", size = 4) +
     scale_fill_gradient2(high = "dodgerblue4", na.value = "grey40") +
     scale_x_discrete(labels = c("0", "1", "2", "3", "5", "10", "11")) +
-    xlab("# celltypes removed from reference data") +
+    xlab("# cell types removed from reference data") +
     ylab("Deconvolution methods") +
     theme_classic() +
     theme(
@@ -166,10 +166,10 @@ for (s in st_num:st_num) {
   
   g1 <- ggplot(df_long, aes(y = Column, x = factor(Row), fill = Value)) +
     geom_tile(aes(fill = Value), color = "white", lwd = 1.5) +
-    geom_text(aes(label = round(Value, 4)), color = "black", size = 5) +
+    geom_text(aes(label = round(Value, 4)), color = "black", size = 4) +
     scale_fill_gradient2(high = "dodgerblue4", na.value = "grey40") +
     scale_x_discrete(labels = c("0", "1", "2", "3", "5", "10", "11")) +
-    xlab("# celltypes removed from reference data") +
+    xlab("# cell types removed from reference data") +
     ylab("Deconvolution methods") +
     theme_classic() +
     theme(
@@ -187,10 +187,10 @@ for (s in st_num:st_num) {
   
   g2 <- ggplot(df_long2, aes(y = Column, x = factor(Row), fill = Value)) +
     geom_tile(aes(fill = Value), color = "white", lwd = 1.5) +
-    geom_text(aes(label = round(Value, 4)), color = "black", size = 5) +
+    geom_text(aes(label = round(Value, 4)), color = "black", size = 4) +
     scale_fill_gradient2(high = "dodgerblue4", na.value = "grey40") +
     scale_x_discrete(labels = c("0", "1", "2", "3", "5", "10", "11")) +
-    xlab("# celltypes removed from reference data") +
+    xlab("# cell types removed from reference data") +
     ylab("Deconvolution methods") +
     theme_classic() +
     theme(

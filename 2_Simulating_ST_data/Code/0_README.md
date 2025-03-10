@@ -26,3 +26,6 @@ Manual testing, each script can be run independently. More instructions can be f
 3. min number of cells per spot
 4. max number of cells per spot
 5. simulated ST dataset number (either 1/2/3)
+
+
+**logs:** This consists of log (text) files from the execution for reference.
