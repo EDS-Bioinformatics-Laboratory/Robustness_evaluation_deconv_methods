@@ -91,10 +91,10 @@ rmse.base <- ggplot(rmsePlot1, aes(x = variable, y = value)) +
   ) + NoLegend() +
   ggtitle("Baseline scenario")
 
-png(file = paste0(Results, "Fig_baseline_st_", st_num, ".png"),
-    res = 450, width = 9.6, height = 6, units = "in")
-print(plot_grid(jsd.base, rmse.base,  ncol = 1, rel_heights = c(.7, .8, .15)))
-dev.off()
+# png(file = paste0(Results, "Fig_baseline_st_", st_num, ".png"),
+#     res = 450, width = 9.6, height = 6, units = "in")
+# print(plot_grid(jsd.base, rmse.base,  ncol = 1, rel_heights = c(.7, .8, .15)))
+# dev.off()
 
 
 jsd.list <- jsd.lists
@@ -172,15 +172,25 @@ rmse.other <- lapply(1:1, function(m) {
 })
 
 
-png(file = paste0(Results, "Fig_removal_scenario_st_", st_num, ".png"),
-    res = 450, width = 9.6, height = 6, units = "in")
-print(plot_grid(jsd.other[[1]], rmse.other[[1]], ncol = 1, rel_heights = c(.7, .9)))
-dev.off()
+# png(file = paste0(Results, "Fig_removal_scenario_st_", st_num, ".png"),
+#     res = 450, width = 9.6, height = 6, units = "in")
+# print(plot_grid(jsd.other[[1]], rmse.other[[1]], ncol = 1, rel_heights = c(.7, .9)))
+# dev.off()
 
 
 
 # Calculate median values for the delta JSD per combination of 
 # mismatch scenario and deconvolution method
+
+cust_methods <- c("cell2location",
+                  "RCTD",
+                  "CARD",
+                  "SCDC",
+                  "MuSiC",
+                  "Stereoscope",
+                  "Seurat",
+                  "SPOTlight")
+
 jsd.other <- lapply(1:1, function(m) {
   mat.plot <- list()
   # first row for baseline
@@ -197,13 +207,16 @@ jsd.other <- lapply(1:1, function(m) {
 delta.jsd.median <- aggregate(value ~ scene + variable, data = jsd.other[[1]], median)
 # Put missing values back
 delta.jsd.median %>% 
-  mutate(value=ifelse(variable == "Seurat" & scene %in% c(5,6), NA, value)) %>%
+  mutate(value=ifelse(variable == "Seurat" & st_num == 1 & scene %in% c(5,6), NA, value)) %>%
   mutate(value=ifelse(variable == "CARD" & scene ==6, NA, value)) ->
   delta.jsd.median
 
+# custom ordering method name in the facets
+delta.jsd.median$variable <- factor(delta.rmse.median$variable, levels = cust_methods)
+
 # Plot the delta JSD median values and add a regression line
-  gg1 <- ggplot(delta.jsd.median, aes(scene, value, colour=variable)) +
-    geom_point()  + 
+gg1 <- ggplot(delta.jsd.median, aes(scene, value, colour=variable)) +
+  geom_point()  + 
   geom_smooth(aes(scene, value, colour=variable), method=lm, se=FALSE) +
   facet_wrap(~ variable, nrow = 1, scales="free_x") +
   labs(x = "", y = expression(Delta*"JSD (median)")) + 
@@ -211,9 +224,18 @@ delta.jsd.median %>%
     breaks = c(1, 2, 3, 4, 5, 6),  # Customize breaks
     labels = c("1", "2", "3", "5", "10", "11")  # Custom labels
   ) +
-  theme(legend.position = "none",
-        axis.text.x = element_text(size = 8, vjust = 1)) +
-  NoLegend()
+  theme(
+    legend.position = "none",
+    legend.key.size = unit(0.5, "cm"),
+    strip.text = element_text(size = 11, color = "dodgerblue2"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 9, color = "black", vjust = 1),
+    axis.text.y = element_text(size = 10, color = "black", hjust = 1),
+    axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, color = "dodgerblue4"),
+    panel.background = element_rect(fill = "white"),
+    panel.grid.major = element_line(colour = "grey70", linewidth = 0.1)
+  )
 
 # Calculate median values for the delta RMSE per combination of 
 # mismatch scenario and deconvolution method
@@ -232,9 +254,12 @@ rmse.other <- lapply(1:1, function(m) {
 delta.rmse.median <- aggregate(value ~ scene + variable, data = rmse.other[[1]], median)
 # Put missing values back
 delta.rmse.median %>% 
-  mutate(value=ifelse(variable == "Seurat" & scene %in% c(5,6), NA, value)) %>%
+  mutate(value=ifelse(variable == "Seurat" & st_num == 1 & scene %in% c(5,6), NA, value)) %>%
   mutate(value=ifelse(variable == "CARD" & scene ==6, NA, value)) ->
   delta.rmse.median
+
+# custom ordering method name in the facets
+delta.rmse.median$variable <- factor(delta.rmse.median$variable, levels = cust_methods)
 
 # Plot the delta RMSE median values and add a regression line
 gg2 <- ggplot(delta.rmse.median, aes(scene, value, colour=variable)) +
@@ -246,12 +271,21 @@ gg2 <- ggplot(delta.rmse.median, aes(scene, value, colour=variable)) +
     breaks = c(1, 2, 3, 4, 5, 6),  # Customize breaks
     labels = c("1", "2", "3", "5", "10", "11")  # Custom labels
   ) +
-  theme(legend.position = "none",
-        axis.text.x = element_text(size = 8, vjust = 1),
-        axis.title.x = element_text(size = 10, vjust = 1)) +
-  NoLegend()
+  theme(
+    legend.position = "none",
+    legend.key.size = unit(0.5, "cm"),
+    strip.text = element_text(size = 11, color = "dodgerblue2"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 9, color = "black", vjust = 1),
+    axis.text.y = element_text(size = 10, color = "black", hjust = 1),
+    axis.title.x = element_text(size = 12, vjust = 0.5, color = "dodgerblue4"),
+    axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, color = "dodgerblue4"),
+    panel.background = element_rect(fill = "white"),
+    panel.grid.major = element_line(colour = "grey70", linewidth = 0.1)
+  )
 
 png(file = paste0(Results, "delta_median_st_", st_num, ".png"),
     res = 450, width = 9.6, height = 6, units = "in")
-print(gg1+gg2+patchwork::plot_layout(nrow=2))
+print(gg1 + gg2 + patchwork::plot_layout(nrow = 2))
 dev.off()

@@ -133,18 +133,6 @@ col_groups <- tibble::tibble(col1 = c("Method",
 )
 
 
-# row_info <- tidyr::tribble(
-#   ~group, ~id,
-#   "ST-based", "cell2location",
-#   "ST-based", "RCTD",
-#   "ST-based", "CARD",
-#   "ST-based", "Stereoscope",
-#   "ST-based", "Seurat",
-#   "ST-based", "SPOTlight",
-#   "Bulk rna-seq based", "SCDC",
-#   "Bulk rna-seq based", "MuSiC"
-# )
-
 palettes <- list(
   methods = "Greys",
   ranks = (RColorBrewer::brewer.pal(9, "Blues")),
@@ -158,14 +146,14 @@ legends <- list(
     palette = "ranks",
     geom = "funkyrect",
     labels = c(" 8", "", "", "", "", "", "", "1"),
-    size = c(.25, .375, .5, .6, .7, .8, .9, 1)
+    size = c(rep(1, 8))
   ),
   list(
     title = "Baseline ranking",
     palette = "accuracy",
     geom = "funkyrect",
     labels = c(" 8", "", "", "", "", "", "", "1"),
-    size = c(.25, .375, .5, .6, .7, .8, .9, 1)
+    size = c(rep(1, 8))
   ),
   list(
     title = "Mismatch ranking",
@@ -183,6 +171,7 @@ funky <- funkyheatmap::funky_heatmap(as.data.frame(norm_min_max(final_df)),
                                      # row_info = row_info,
                                      palettes = palettes,
                                      legends = legends,
+                                     add_abc = F,
                                      scale_column = F,
                                      position_args = funkyheatmap::position_arguments(
                                        row_height = 1.2,
