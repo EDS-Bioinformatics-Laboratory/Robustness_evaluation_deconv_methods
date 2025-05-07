@@ -7,6 +7,11 @@
 * [Content of the current directory](#content-of-the-current-directory)
 * [Installation steps](#installation-steps)
 * [Reproducing manuscript results](#how-can-you-reproduce-the-results-in-the-manuscript)
+	- [Module 1: Generate single-cell reference datasets](#module-1-generate-single-cell-reference-datasets)
+	- [Module 2: Generate simulated ST data](#module-2-generate-simulated-st-data)
+ 	- [Module 3: Deconvolution method results](#module-3-deconvolution-method-results)
+  	- [Module 4: Analyse deconvolution results](#module-4-analyse-deconvolution-results)
+ 	- [Module 5: Post analysis results](#module-5-post-analysis-results)	 	
 * [Known issues](#known-issues)
 * [Appendix A](#appendix-a)
 <br>
@@ -14,7 +19,6 @@
 ## Overview
 &emsp;&emsp;&emsp;&emsp; Spatial transcriptomics approaches based on sequencing (barcode-based, e.g., 10x Visium) preserve spatial information but with limited cellular resolution. On the other hand, single-cell RNA-sequencing (scRNA-seq) techniques provide single-cell resolution but lose spatial resolution because of the tissue dissociation step during the scRNA-seq experimental procedure. With these complementary strengths in mind, computational methods have been developed to combine scRNA-seq and spatial transcriptomics data. These approaches use deconvolution to identify cell types and their respective proportions at each location in spatial transcriptomics data with the aid of a scRNA-seq reference dataset. Some suggest that deconvolution approaches are sensitive to the absence of cell type(s) in the single-cell reference dataset, a problem referred to as *cell type mismatch*. Here, we systematically evaluated the robustness of deconvolution methods to cell type mismatch tailored for spatial transcriptomics data.
 <br>
-
 
 ## Content of the current directory
 * **0_SoftwareEnvironment**:
@@ -27,13 +31,11 @@ This directory enlists the software environment specifications used for various 
 &emsp;&emsp;&emsp; b. **ST2**: 1-5 cell types and 10-15 cells per spot; <br>
 &emsp;&emsp;&emsp; c. **ST3**: 1-5 cell types and 3-7 cells per spot.
 
-
 * **3\_ST\_methods**: Comprised of standalone R/Python scripts, one for each deconvolution method and shell/batch scripts to execute the R or Python scripts in parallel for multiple instances in a removal scenario, provided the required computational power is available.
 	- **R-based**: CARD, RCTD, SCDC, MuSiC, Seurat, SPOTlight
 	- **Python-based**: cell2location, Stereoscope (GPU recommended) <br>
-	
-	The deconvolution results for each removal scenario are available in the respective directory (for instance, the _**rm1**_ directory refers to the removal scenario for removing one cell type from the scrna-seq reference data). See below the overview of removal scenarios and total reference datasets in each scenario. <br>
-	
+ 
+	&emsp;&emsp;&emsp;The deconvolution results for each removal scenario are available in the respective directory (for instance, the _**rm1**_ directory refers to the removal scenario for removing one cell type from the scrna-seq reference data). See below the overview of removal scenarios and total reference datasets in each scenario. <br>
 	- **rm0** - removal of _**no**_ cell types from reference data (1 dataset) <br>
 	- **rm1** - removal of _**one**_ cell type from reference data (13 datasets) <br>
 	- **rm2** - removal of _**two**_ cell types from reference data (5 datasets) <br>
@@ -41,7 +43,6 @@ This directory enlists the software environment specifications used for various 
 	- **rm5** - removal of _**five**_ cell types from reference data (1 dataset) <br>
 	- **rm10** - removal of _**ten**_ cell types from reference data (5 datasets) <br>
 	- **rm11** - removal of _**eleven**_ cell types from reference data (5 datasets)
-
 
 * **4\_Analysis\_results**: Comprised of scripts to calculate similarity metrics like JSD and RMSE to understand the performance of deconvolution methods for various cell type removal scenarios compared to a baseline with no cell type missing. Cell type reassignment metrics calculate the assignment of missing cell type proportions from the reference dataset.
 
@@ -70,20 +71,19 @@ This directory enlists the software environment specifications used for various 
 	- Execute `Renv_setup.R` script from where it resides currently to initialise the renv infrastructure for the R project (ignore the warning messages) using `Rscript Renv_setup.R arg1` command. <br>
 	Expected command line argument (*arg1*) is **(classic) GITHUB_PAT token** ([more details](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)).<br>
 	*The required files for renv setup (renv.lock, .Rprofile, renv/activate.R, renv/settings.json) should already be in your R project directory; If not, ensure it resides in the same directory as the Renv_setup.R file.*
-	
 > [!NOTE]
 > Due to the platform (os) dependencies, a collaborator can still experience minor discrepancies in the results while using the conda/renv functionality.
 
-For Windows OS, see [Appendix A](./#appendix-a)
+Installation steps for Windows OS can be found in [Appendix A](./#appendix-a)
+<br>
 <br>
 
 ## How can you reproduce the results in the manuscript?
-
 > [!WARNING] 
 > The following instructions are for reproducing the results using the command-line terminal/prompt, not RStudio or Jupyter Notebook.
-<br>
 
-### Module-1: Navigate to "1\_Generate\_sc\_ref_data/Code/" directory
+### Module 1: Generate single-cell reference datasets
+#### Navigate to "1\_Generate\_sc\_ref_data/Code/" directory
 * Generating a single-cell reference dataset from multiple single-cell datasets, UMAP representations included in the supplementary information of the manuscript using the commands as below;
 	
 	&emsp;&emsp;&emsp;&emsp;`Rscript Init_env.R` <br>
@@ -95,10 +95,9 @@ For Windows OS, see [Appendix A](./#appendix-a)
 	
 	&emsp;&emsp;&emsp;&emsp;`Rscript SC_ref_data_scenarios.R`
 	> Note: this script requires the single-cell reference dataset generated in the previous step.
-	
-<br>
 
-### Module-2: Navigate to "2\_Simulating\_ST\_data/Code/" directory
+### Module 2: Generate simulated ST data
+#### Navigate to "2\_Simulating\_ST\_data/Code/" directory
 * Generating simulated spatial transcriptomics datasets using single-cell reference data, the three datasets vary by the number of cells and cell types present per spatial location using the commands as below;
 
 	&emsp;&emsp;&emsp;&emsp;`Rscript Init_env.R` <br>
@@ -113,9 +112,9 @@ For Windows OS, see [Appendix A](./#appendix-a)
 		To reproduce the results in the manuscript, the following command line input generates the first simulated ST dataset:
 		Rscript Init_env.R
 		Rscript Generate_ST_data.R 4 8 10 15 1
-<br>
 
-### Module-3: Navigate to "3\_ST\_methods/Code/" directory 
+### Module 3: Deconvolution method results
+#### Navigate to "3\_ST\_methods/Code/" directory 
 * The shell scripts execute all deconvolution methods to predict cell type proportions simultaneously for all removal scenarios and multiple reference datasets for each scenario. <br>
 
 	Shell scripts to execute R and Python-based deconvolution methods: <br>
@@ -144,7 +143,6 @@ For Windows OS, see [Appendix A](./#appendix-a)
 		(6) ./Execute_R_based_methods.sh 1 5 rm10
 		(7) ./Execute_R_based_methods.sh 1 5 rm11
 		
-
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; replace `Execute_R_based_methods.sh` by `Execute_python_based_methods.sh` for executing python-based methods. 
 	
 	*The standalone scripts for each deconvolution method expect the command line arguments as below; notice the different versions of argument* **b**.
@@ -157,21 +155,21 @@ For Windows OS, see [Appendix A](./#appendix-a)
 	> arg5 - path to save deconvolution results directory* <br>
 
 	Note: While executing cell2location **without GPU support**, `use_gpu` argument should be set to **FALSE** in Cell2Location.py script.
-	
-	> [!CAUTION]
-	> Known failed instances of deconvolution methods:<br>
-	> &emsp;&emsp;&emsp;&emsp;CARD all 5 rm11 reference dataset,<br>
-	> &emsp;&emsp;&emsp;&emsp;Seurat for 3 rm10 reference dataset,<br>
-	> &emsp;&emsp;&emsp;&emsp;Seurat for 2 rm11 reference dataset
-	
+
+> [!CAUTION]
+> Known failed instances of deconvolution methods:<br>
+CARD all 5 rm11 reference dataset,<br>
+Seurat for 3 rm10 reference dataset,<br>
+Seurat for 2 rm11 reference dataset
 <br>
 
-### Module-4: Navigate to "4\_Analysis\_results/Code/" directory 
+### Module 4: Analyse deconvolution results
+#### Navigate to "4\_Analysis\_results/Code/" directory 
 
+> [!IMPORTANT]
+> Estimating performance metrics needs all the deconvolution results generated in Module 3.
+> 
 * Estimating performance metrics for all the scenarios of cell type removal.
-
-	> [!IMPORTANT]
-	> Estimating performance metrics needs all the deconvolution results generated in Module 3.
 
     - **For JSD calculations**:
    
@@ -207,17 +205,17 @@ For Windows OS, see [Appendix A](./#appendix-a)
 		
 		To reproduce the results in the manuscript the following provides the command line input for calculating cell type reassignment for all method with 1st simulated ST data, and removal of one, two & three cell type scenarios,
 		Rscript Get_celltype_assignment_results.R 1 "rm1","rm2","rm3"	
-	> [!TIP]
-	> a list is provided as a single argument without spaces in between
-
+> [!TIP]
+> a list is provided as a single argument without spaces in between
 <br>
 
-### Module-5: Navigate to "5\_Post\_analysis\_work/Code/" directory 
+### Module 5: Post analysis results
+#### Navigate to "5\_Post\_analysis\_work/Code/" directory 
+
+> [!IMPORTANT]
+> This module expects calculation results from Module 4
 
 * Generating figures/plots are included in the manuscript for calculated JSD, RMSE, and cell type reassignment estimates for the specified cell type removal scenarios.
-
-	> [!IMPORTANT]
-	> This module expects calculation results from Module 4
 	
    - Generate plots for cell type correlation and cell type reassignment plots for cell type removal scenarios rm1, rm2, and rm3 using commands as below;
    
@@ -259,8 +257,6 @@ For Windows OS, see [Appendix A](./#appendix-a)
 			
 		To reproduce the results in the manuscript, the following provides the command line input,
 		Rscript Validate_numbers.R 1
-
-<br>
 <br>
 
 ## Known issues
@@ -455,6 +451,7 @@ The issue can be resolved by adding the line below at the beginning of the R scr
 <br>
 
 ## Appendix A
+### Installation steps for Windows OS
 
 1. Install R 4.1.2 [download here](https://cran.r-project.org/bin/windows/base/old/4.1.2/)
 2. Install Rtools 4.0  [download here](https://cran.r-project.org/bin/windows/Rtools/rtools40.html). <br>
