@@ -20,6 +20,9 @@
 <br>
 
 ## Contents of the current directory
+
+Note that in the complete sFSS, this directory corresponds to the Processing directory. 
+
 * **0_SoftwareEnvironment**:
 This directory enlists the software environment specifications used for various programming languages and/or platforms during the project.
 
@@ -47,8 +50,7 @@ This directory enlists the software environment specifications used for various 
 
 * **5\_Post\_analysis\_work**: The directory comprises scripts to generate the final resulting plots in the project; a few plots are included in the manuscript's main text, while others were included in the supplementary information.
 
-* **Data**: Comprised of pre-processed data downloaded from a public data-sharing platform. One of the datasets is procured from the group of Lisa van Baarsen and is available on GEO as well with GEO accession ID - ####. (not available in github repository)
-
+* **Data** (only available in sFSS, not on GitHub): Comprised of pre-processed data downloaded from a public data-sharing platform. One of the datasets is procured from the group of Lisa van Baarsen and is available on GEO as well with GEO accession ID - ####. 
 * **renv**: The project uses the renv functionality and the directory comprises the essential files (activate.R, settings.json) and directories for the renv setup.
 
 * **Renv_setup.R**: This script sets up the R environment for the project work. Details about executing are available in the file as a header and in the comments. Also included under the 'How to reproduce the results' section further down in this document.<br>
@@ -61,10 +63,13 @@ This directory enlists the software environment specifications used for various 
 <br>
 
 ## Installation steps
+
+Running the code requires a Linux OS and the R, RTools and Python versions indicated below. 
+
 #### Linux / Ubuntu distribution
 
 1. Install Anaconda ([easy guide for installation](https://phoenixnap.com/kb/install-anaconda-ubuntu))
-2. Install R version 4.1.2 ([download](https://cran.rstudio.com/src/base/R-4/)). Instructions on [how to install](https://docs.posit.co/resources/install-r-source.html)
+2. Install R version 4.1.2 ([download](https://cran.rstudio.com/src/base/R-4/R-4.1.2.tar.gz)). Instructions on [how to install](https://docs.posit.co/resources/install-r-source.html)
 3. Set up conda environment with Python version 3.9.7 using the command: <t>`conda env create -f environment.yml`
 4. Set up renv setup details
 	- Execute `Renv_setup.R` script from where it resides currently to initialise the renv infrastructure for the R project (ignore the warning messages) using `Rscript Renv_setup.R arg1` command. <br>
@@ -73,7 +78,7 @@ This directory enlists the software environment specifications used for various 
 > [!NOTE]
 > Due to the platform (os) dependencies, a collaborator can still experience minor discrepancies in the results while using the conda/renv functionality.
 
-Installation steps for Windows OS can be found in [Appendix A](./#appendix-a)
+Installation steps for Windows OS can be found in [Appendix A](./#appendix-a) Note however that using Windows only R-based deconvolution methods can be executed and that therefore the results of Python-based methods (cell2location, SPOTlight) cannot be reproduced. 
 <br>
 <br>
 
@@ -144,7 +149,7 @@ Installation steps for Windows OS can be found in [Appendix A](./#appendix-a)
 		
 	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; replace `Execute_R_based_methods.sh` by `Execute_python_based_methods.sh` for executing python-based methods. 
 	
-	*The standalone scripts for each deconvolution method expect the command line arguments as below; notice the different versions of argument* **b**.
+	*The standalone scripts for each deconvolution method expect the command line arguments as below; notice the different versions of argument* **arg2**.
 
 	> *arg1 - index of the ST dataset <br>
 	> arg2 - for R-based methods: index of single-cell reference datasets [varies per removal scenario] <br>
@@ -155,11 +160,11 @@ Installation steps for Windows OS can be found in [Appendix A](./#appendix-a)
 
 	Note: While executing cell2location **without GPU support**, `use_gpu` argument should be set to **FALSE** in Cell2Location.py script.
 
-> [!CAUTION]
-> Known failed instances of deconvolution methods:<br>
-CARD all 5 rm11 reference dataset,<br>
-Seurat for 3 rm10 reference dataset,<br>
-Seurat for 2 rm11 reference dataset
+> [!Note]
+> In some isolated cases the deconvolution methods indicated below do not generate results, however scripts will still work:<br>
+CARD: all 5 instances of the rm11 scenario for all three simulated datasets (ST1, ST2, ST3),<br>
+Seurat: for 3 instances of the rm10 scenario for ST1,<br>
+Seurat: for 2 instances of the rm11 scenario for ST1.
 <br>
 
 ### Module 4: Analyse deconvolution results
@@ -204,8 +209,8 @@ Seurat for 2 rm11 reference dataset
 		
 		To reproduce the results in the manuscript the following provides the command line input for calculating cell type reassignment for all method with 1st simulated ST data, and removal of one, two & three cell type scenarios,
 		Rscript Get_celltype_assignment_results.R 1 "rm1","rm2","rm3"	
-> [!TIP]
-> a list is provided as a single argument without spaces in between
+> [!Note]
+> a list has to be provided as a single argument without spaces in between
 <br>
 
 ### Module 5: Post analysis results
@@ -385,14 +390,6 @@ to resolve this error, you can follow either option from below,
 
 <br>
 
-#### 2. Compilation failed error on Windows OS
-
-R and RStudio on Windows OS require RTools (a toolchain for building R and R packages). The correct version of RTools can be downloaded from [here](https://cran.r-project.org/bin/windows/Rtools/).
-
-> Note: Ensure you do not have white spaces in your paths while installing the RTools.
-	
-<br>
-
 #### 3. RCTD parallel execution
 
 If you come across the below error while executing the RCTD deconvolution method.
@@ -452,7 +449,7 @@ The issue can be resolved by adding the line below at the beginning of the R scr
 ## Appendix A
 ### Installation steps for Windows OS
 
-1. Install R 4.1.2 [download here](https://cran.r-project.org/bin/windows/base/old/4.1.2/)
+1. Install R 4.1.2 [download here](https://cran.r-project.org/bin/windows/base/old/4.1.2/R-4.1.2-win.exe)
 2. Install RTools 4.0  [download here](https://cran.r-project.org/bin/windows/Rtools/rtools40.html). <br>
 Add RTools path to *'PATH'* environment variable (make sure no white spaces are present in the path)
 3. Install miniconda [download here](https://repo.anaconda.com/miniconda/) <br>
