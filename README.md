@@ -387,9 +387,9 @@ to resolve this error, you can follow either option from below,
 
 #### 2. Compilation failed error on Windows OS
 
-R and RStudio on Windows OS require rtools (a toolchain for building R and R packages). The correct version of rtools can be downloaded from [here](https://cran.r-project.org/bin/windows/Rtools/).
+R and RStudio on Windows OS require RTools (a toolchain for building R and R packages). The correct version of RTools can be downloaded from [here](https://cran.r-project.org/bin/windows/Rtools/).
 
-> Note: Ensure you do not have white spaces in your paths while installing the rtools.
+> Note: Ensure you do not have white spaces in your paths while installing the RTools.
 	
 <br>
 
@@ -453,8 +453,8 @@ The issue can be resolved by adding the line below at the beginning of the R scr
 ### Installation steps for Windows OS
 
 1. Install R 4.1.2 [download here](https://cran.r-project.org/bin/windows/base/old/4.1.2/)
-2. Install Rtools 4.0  [download here](https://cran.r-project.org/bin/windows/Rtools/rtools40.html). <br>
-Add Rtools path to *'PATH'* environment variable (make sure no white spaces are present in the path)
+2. Install RTools 4.0  [download here](https://cran.r-project.org/bin/windows/Rtools/rtools40.html). <br>
+Add RTools path to *'PATH'* environment variable (make sure no white spaces are present in the path)
 3. Install miniconda [download here](https://repo.anaconda.com/miniconda/) <br>
 Look for *'Miniconda3-py39_24.11.1-0-Windows-x86_64.exe'*
 4. Set up conda environment with Python version 3.9.7 using the command: <t>`conda env create -f environment.yml`
