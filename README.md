@@ -1,9 +1,9 @@
 # Systematic evaluation of robustness to cell type mismatch of deconvolution methods for spatial transcriptomics data
 
-## Table of Contents
+## Table of contents
 
 * [Overview](#overview)
-* [Content of the current directory](#content-of-the-current-directory)
+* [Contents of the current directory](#contents-of-the-current-directory)
 * [Installation steps](#installation-steps)
 * [Reproducing manuscript results](#how-can-you-reproduce-the-results-in-the-manuscript)
 	- [Module 1: Generate single-cell reference datasets](#module-1-generate-single-cell-reference-datasets)
@@ -19,7 +19,7 @@
 &emsp;&emsp;&emsp;&emsp; Spatial transcriptomics approaches based on sequencing (barcode-based, e.g., 10x Visium) preserve spatial information but with limited cellular resolution. On the other hand, single-cell RNA-sequencing (scRNA-seq) techniques provide single-cell resolution but lose spatial resolution because of the tissue dissociation step during the scRNA-seq experimental procedure. With these complementary strengths in mind, computational methods have been developed to combine scRNA-seq and spatial transcriptomics data. These approaches use deconvolution to identify cell types and their respective proportions at each location in spatial transcriptomics data with the aid of a scRNA-seq reference dataset. Some suggest that deconvolution approaches are sensitive to the absence of cell type(s) in the single-cell reference dataset, a problem referred to as *cell type mismatch*. Here, we systematically evaluated the robustness of deconvolution methods to cell type mismatch tailored for spatial transcriptomics data.
 <br>
 
-## Content of the current directory
+## Contents of the current directory
 * **0_SoftwareEnvironment**:
 This directory enlists the software environment specifications used for various programming languages and/or platforms during the project.
 
