@@ -3,7 +3,6 @@
 ## Table of Contents
 
 * [Overview](#overview)
-* [Table of contents](#table-of-contents)
 * [Content of the current directory](#content-of-the-current-directory)
 * [Installation steps](#installation-steps)
 * [Reproducing manuscript results](#how-can-you-reproduce-the-results-in-the-manuscript)
