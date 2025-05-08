@@ -78,7 +78,7 @@ Running the code requires a Linux OS and the R, RTools and Python versions indic
 > [!NOTE]
 > Due to the platform (os) dependencies, a collaborator can still experience minor discrepancies in the results while using the conda/renv functionality.
 
-Installation steps for Windows OS can be found in [Appendix A](./#appendix-a) Note however that using Windows only R-based deconvolution methods can be executed and that therefore the results of Python-based methods (cell2location, SPOTlight) cannot be reproduced. 
+Installation steps for Windows OS can be found in [Appendix A](./#appendix-a). Note however that using Windows only R-based deconvolution methods can be executed and that therefore the results of Python-based methods (cell2location, SPOTlight) cannot be reproduced. 
 <br>
 <br>
 
@@ -390,7 +390,7 @@ to resolve this error, you can follow either option from below,
 
 <br>
 
-#### 3. RCTD parallel execution
+#### 2. RCTD parallel execution
 
 If you come across the below error while executing the RCTD deconvolution method.
 
@@ -419,7 +419,7 @@ Please follow the solution available in the reported issue; if the problem persi
 
 <br>
 
-#### 4. Creating conda virtual environment with environment.yml
+#### 3. Creating conda virtual environment with environment.yml
 
 
 The `environment.yml` is generated on the linux system and thus you can get error like below.
@@ -436,7 +436,7 @@ PackagesNotFoundError: The following packages are not available from current cha
 ```
 <br>
 
-#### 5. python\_config\_impl(python) error
+#### 4. python\_config\_impl(python) error
 
 The R script uses installed Python using the RETICULATE package. You get this error if the package cannot find the proper Python installation.
 
